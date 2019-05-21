@@ -43,13 +43,13 @@ export class RaspberryPiService {
 
       exec(command, (err, stdout, stderr) => {
         if (err) {
-          console.log(JSON.stringify(err))
+          console.log('err', JSON.stringify(err))
         }
         if (stdout) {
-          console.log(stdout)
+          console.log('stdout', stdout)
         }
         if (stderr) {
-          console.log(stderr)
+          console.log('stderr', stderr)
         }
         resolved()
       })
