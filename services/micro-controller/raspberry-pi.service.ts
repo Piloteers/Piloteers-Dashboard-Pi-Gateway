@@ -15,7 +15,7 @@ export class RaspberryPiService {
   async init() {
     await this.removeAutoStartScript()
     await this.createAutoStart();
-    await this.startKiosk()
+    await this.writeKiosk()
   }
 
   removeAutoStartScript() {
@@ -57,22 +57,28 @@ export class RaspberryPiService {
     })
   }
 
-  startKiosk() {
+  writeKiosk() {
     console.log('start kiosk')
     return new Promise((resolved) => {
-      const command = `DISPLAY=:0 /usr/bin/chromium-browser -start-maximized --no-sandbox --kiosk --disable-infobars  http://127.0.0.1:${env.serverPort}`
+      const file = `
+      @lxpanel --profile LXDE-pi
+      @pcmanfm --desktop --profile LXDE-pi
+      #@xscreensaver -no-splash
+      point-rpi
 
-      exec(command, (err, stdout, stderr) => {
-        if (err) {
-          console.log(err)
+      @chromium-browser -start-maximized --kiosk --disable-infobars  http://127.0.0.1:${env.serverPort}
+      @unclutter
+      @xset s off
+      @xset s noblank
+      @xset -dpms 
+      `
+
+      fs.writeFile(`/home/pi/.config/lxsession/LXDE-pi/autostart`, file, async (err) => {
+        if (!err) {
+          console.log(`Pi: kiosk chrome setup`)
+          await this.executableAutoStart()
+          resolved()
         }
-        if (stdout) {
-          console.log(stdout)
-        }
-        if (stderr) {
-          console.log(stderr)
-        }
-        resolved()
       })
     })
   }

@@ -20,7 +20,7 @@ class RaspberryPiService {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.removeAutoStartScript();
             yield this.createAutoStart();
-            yield this.startKiosk();
+            yield this.writeKiosk();
         });
     }
     removeAutoStartScript() {
@@ -58,22 +58,28 @@ class RaspberryPiService {
             });
         });
     }
-    startKiosk() {
+    writeKiosk() {
         console.log('start kiosk');
         return new Promise((resolved) => {
-            const command = `DISPLAY=:0 /usr/bin/chromium-browser -start-maximized --no-sandbox --kiosk --disable-infobars  http://127.0.0.1:${env_1.env.serverPort}`;
-            child_process_1.exec(command, (err, stdout, stderr) => {
-                if (err) {
-                    console.log(err);
+            const file = `
+      @lxpanel --profile LXDE-pi
+      @pcmanfm --desktop --profile LXDE-pi
+      #@xscreensaver -no-splash
+      point-rpi
+
+      @chromium-browser -start-maximized --kiosk --disable-infobars  http://127.0.0.1:${env_1.env.serverPort}
+      @unclutter
+      @xset s off
+      @xset s noblank
+      @xset -dpms 
+      `;
+            fs.writeFile(`/home/pi/.config/lxsession/LXDE-pi/autostart`, file, (err) => __awaiter(this, void 0, void 0, function* () {
+                if (!err) {
+                    console.log(`Pi: kiosk chrome setup`);
+                    yield this.executableAutoStart();
+                    resolved();
                 }
-                if (stdout) {
-                    console.log(stdout);
-                }
-                if (stderr) {
-                    console.log(stderr);
-                }
-                resolved();
-            });
+            }));
         });
     }
     createAutoStart() {
