@@ -45,7 +45,7 @@ class RaspberryPiService {
             const command = `sudo chmod 755 /etc/init.d/${this.autoStactScriptName} && sudo update-rc.d ${this.autoStactScriptName} defaults`;
             child_process_1.exec(command, (err, stdout, stderr) => {
                 if (err) {
-                    console.log(err);
+                    console.log(JSON.stringify(err));
                 }
                 if (stdout) {
                     console.log(stdout);
