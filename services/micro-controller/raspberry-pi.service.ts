@@ -69,9 +69,11 @@ export class RaspberryPiService {
         if (exists) {
           return
         } else {
-          fs.writeFile('/etc/init.d/autostart', file, (data) => {
-            console.log(data)
-            resolved()
+          fs.writeFile('/etc/init.d/autostart', file, (err) => {
+            if (!err) {
+              console.log('Pi: Created auto start file')
+              resolved()
+            }
           })
         }
       });
