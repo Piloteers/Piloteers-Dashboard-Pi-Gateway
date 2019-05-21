@@ -12,8 +12,6 @@ export class RaspberryPiService {
     this.init()
   }
 
-
-
   async init() {
     await this.removeAutoStartScript()
     await this.createAutoStart();
@@ -21,7 +19,7 @@ export class RaspberryPiService {
 
   removeAutoStartScript() {
     return new Promise((resolved) => {
-      const command = `sudo rm -rf /etc/init.d/autostart`
+      const command = `sudo rm -rf /etc/init.d/${this.autoStactScriptName}`
 
       exec(command, (err, stdout, stderr) => {
         if (err) {
@@ -29,11 +27,11 @@ export class RaspberryPiService {
         }
         if (stdout) {
           console.log(stdout)
-          resolved()
         }
         if (stderr) {
           console.log(stderr)
         }
+        resolved()
       })
     })
   }
@@ -48,11 +46,11 @@ export class RaspberryPiService {
         }
         if (stdout) {
           console.log(stdout)
-          resolved()
         }
         if (stderr) {
           console.log(stderr)
         }
+        resolved()
       })
     })
   }

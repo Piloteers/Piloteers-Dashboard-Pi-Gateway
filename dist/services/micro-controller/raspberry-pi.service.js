@@ -24,18 +24,18 @@ class RaspberryPiService {
     }
     removeAutoStartScript() {
         return new Promise((resolved) => {
-            const command = `sudo rm -rf /etc/init.d/autostart`;
+            const command = `sudo rm -rf /etc/init.d/${this.autoStactScriptName}`;
             child_process_1.exec(command, (err, stdout, stderr) => {
                 if (err) {
                     console.log(err);
                 }
                 if (stdout) {
                     console.log(stdout);
-                    resolved();
                 }
                 if (stderr) {
                     console.log(stderr);
                 }
+                resolved();
             });
         });
     }
@@ -48,11 +48,11 @@ class RaspberryPiService {
                 }
                 if (stdout) {
                     console.log(stdout);
-                    resolved();
                 }
                 if (stderr) {
                     console.log(stderr);
                 }
+                resolved();
             });
         });
     }
