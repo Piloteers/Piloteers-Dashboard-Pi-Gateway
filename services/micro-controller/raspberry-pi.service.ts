@@ -10,25 +10,32 @@ export class RaspberryPiService {
     this.init()
   }
 
-  init() {
-    // const command = `/usr/bin/chromium-browser -start-maximized --kiosk http://127.0.0.1:${env.serverPort}`
+  async init() {
 
-    // exec(command, (err, stdout, stderr) => {
-    //   if (err) {
-    //     console.log(err)
-    //   }
-    //   if (stdout) {
-    //     console.log(stdout)
-    //   }
-    //   if (stderr) {
-    //     console.log(stderr)
-    //   }
-    // })
-    this.createAutoStart();
+    await this.createAutoStart();
+  }
+
+  async gitPull() {
+    return new Promise((resolved) => {
+      const command = `git pull`
+
+      exec(command, (err, stdout, stderr) => {
+        if (err) {
+          console.log(err)
+        }
+        if (stdout) {
+          console.log(stdout)
+        }
+        if (stderr) {
+          console.log(stderr)
+        }
+      })
+    })
   }
 
   createAutoStart() {
-    const file = `
+    return new Promise((resolved) => {
+      const file = `
       #! /bin/sh
       ### BEGIN INIT INFO
       # Provides: noip
@@ -44,6 +51,8 @@ export class RaspberryPiService {
           start)
               echo "pi wird gestartet"
               # Starte Programm
+              npm i -g pm2
+              cd ~/apps/Piloteers-Dashboard-Pi-Gateway && git pull && npm i && npm run prod
               /usr/bin/chromium-browser -start-maximized --kiosk http://127.0.0.1:${env.serverPort}
               ;;
           stop)
@@ -56,15 +65,18 @@ export class RaspberryPiService {
       exit 0
     `
 
-    fs.exists('/etc/init.d/autostart', (exists) => {
-      if (exists) {
-        return
-      } else {
-        fs.writeFile('/etc/init.d/autostart', file, (err) => {
-          console.log(err)
-        })
-      }
-    });
+      fs.exists('/etc/init.d/autostart', (exists) => {
+        if (exists) {
+          return
+        } else {
+          fs.writeFile('/etc/init.d/autostart', file, (data) => {
+            console.log(data)
+            resolved()
+          })
+        }
+      });
+    })
+
   }
 
 }
