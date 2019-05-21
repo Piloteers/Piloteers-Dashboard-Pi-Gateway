@@ -36,6 +36,7 @@ class RaspberryPiService {
                 if (stderr) {
                     console.log(stderr);
                 }
+                console.log('Pi: Removed old autostart file');
                 resolved();
             });
         });
@@ -44,7 +45,6 @@ class RaspberryPiService {
         return new Promise((resolved) => {
             const command = `sudo chmod 755 /etc/init.d/${this.autoStactScriptName} && sudo update-rc.d ${this.autoStactScriptName} defaults`;
             child_process_1.exec(command, (err, stdout, stderr) => {
-                console.log(err, stdout, stderr);
                 if (err) {
                     console.log('err', JSON.stringify(err));
                 }
@@ -54,12 +54,12 @@ class RaspberryPiService {
                 if (stderr) {
                     console.log('stderr', stderr);
                 }
+                console.log('Pi: Make autostart executable');
                 resolved();
             });
         });
     }
     writeKiosk() {
-        console.log('start kiosk');
         return new Promise((resolved) => {
             const file = `
       @lxpanel --profile LXDE-pi
@@ -67,7 +67,7 @@ class RaspberryPiService {
       #@xscreensaver -no-splash
       point-rpi
 
-      @chromium-browser -start-maximized --kiosk --disable-infobars  http://127.0.0.1:${env_1.env.serverPort}
+      @chromium-browser -start-maximized --kiosk --disable-infobars http://127.0.0.1:${env_1.env.serverPort}
       @unclutter
       @xset s off
       @xset s noblank
