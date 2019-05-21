@@ -13,28 +13,46 @@ const child_process_1 = require("child_process");
 const fs = require("fs");
 class RaspberryPiService {
     constructor() {
+        this.autoStactScriptName = 'autostart';
         this.init();
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
+            yield this.removeAutoStartScript();
             yield this.createAutoStart();
         });
     }
-    gitPull() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return new Promise((resolved) => {
-                const command = `git pull`;
-                child_process_1.exec(command, (err, stdout, stderr) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                    if (stdout) {
-                        console.log(stdout);
-                    }
-                    if (stderr) {
-                        console.log(stderr);
-                    }
-                });
+    removeAutoStartScript() {
+        return new Promise((resolved) => {
+            const command = `sudo rm -rf /etc/init.d/autostart`;
+            child_process_1.exec(command, (err, stdout, stderr) => {
+                if (err) {
+                    console.log(err);
+                }
+                if (stdout) {
+                    console.log(stdout);
+                    resolved();
+                }
+                if (stderr) {
+                    console.log(stderr);
+                }
+            });
+        });
+    }
+    executableAutoStart() {
+        return new Promise((resolved) => {
+            const command = `sudo chmod 755 /etc/init.d/${this.autoStactScriptName} && sudo update-rc.d ${this.autoStactScriptName} defaults`;
+            child_process_1.exec(command, (err, stdout, stderr) => {
+                if (err) {
+                    console.log(err);
+                }
+                if (stdout) {
+                    console.log(stdout);
+                    resolved();
+                }
+                if (stderr) {
+                    console.log(stderr);
+                }
             });
         });
     }
@@ -56,7 +74,7 @@ class RaspberryPiService {
           start)
               echo "pi wird gestartet"
               # Starte Programm
-              cd ~/apps/Piloteers-Dashboard-Pi-Gateway && npm i -g pm2 &&  git pull && npm i && npm run prod
+              cd ~/apps/Piloteers-Dashboard-Pi-Gateway && sudo npm i -g pm2 && sudo git pull && sudo npm i && sudo npm run prod
               /usr/bin/chromium-browser -start-maximized --kiosk http://127.0.0.1:${env_1.env.serverPort}
               ;;
           stop)
@@ -68,17 +86,18 @@ class RaspberryPiService {
               ;;      
       exit 0
     `;
-            fs.exists('/etc/init.d/autostart', (exists) => {
+            fs.exists(`/etc/init.d/${this.autoStactScriptName}`, (exists) => {
                 if (exists) {
                     return;
                 }
                 else {
-                    fs.writeFile('/etc/init.d/autostart', file, (err) => {
+                    fs.writeFile(`/etc/init.d/${this.autoStactScriptName}`, file, (err) => __awaiter(this, void 0, void 0, function* () {
                         if (!err) {
-                            console.log('Pi: Created auto start file');
+                            console.log(`Pi: Created ${this.autoStactScriptName} file`);
+                            yield this.executableAutoStart();
                             resolved();
                         }
-                    });
+                    }));
                 }
             });
         });

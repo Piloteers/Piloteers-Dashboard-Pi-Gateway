@@ -6,18 +6,22 @@ import * as fs from 'fs';
 
 export class RaspberryPiService {
 
+  autoStactScriptName = 'autostart'
+
   constructor() {
     this.init()
   }
 
-  async init() {
 
+
+  async init() {
+    await this.removeAutoStartScript()
     await this.createAutoStart();
   }
 
-  async gitPull() {
+  removeAutoStartScript() {
     return new Promise((resolved) => {
-      const command = `git pull`
+      const command = `sudo rm -rf /etc/init.d/autostart`
 
       exec(command, (err, stdout, stderr) => {
         if (err) {
@@ -25,6 +29,26 @@ export class RaspberryPiService {
         }
         if (stdout) {
           console.log(stdout)
+          resolved()
+        }
+        if (stderr) {
+          console.log(stderr)
+        }
+      })
+    })
+  }
+
+  executableAutoStart() {
+    return new Promise((resolved) => {
+      const command = `sudo chmod 755 /etc/init.d/${this.autoStactScriptName} && sudo update-rc.d ${this.autoStactScriptName} defaults`
+
+      exec(command, (err, stdout, stderr) => {
+        if (err) {
+          console.log(err)
+        }
+        if (stdout) {
+          console.log(stdout)
+          resolved()
         }
         if (stderr) {
           console.log(stderr)
@@ -51,7 +75,7 @@ export class RaspberryPiService {
           start)
               echo "pi wird gestartet"
               # Starte Programm
-              cd ~/apps/Piloteers-Dashboard-Pi-Gateway && npm i -g pm2 &&  git pull && npm i && npm run prod
+              cd ~/apps/Piloteers-Dashboard-Pi-Gateway && sudo npm i -g pm2 && sudo git pull && sudo npm i && sudo npm run prod
               /usr/bin/chromium-browser -start-maximized --kiosk http://127.0.0.1:${env.serverPort}
               ;;
           stop)
@@ -64,13 +88,14 @@ export class RaspberryPiService {
       exit 0
     `
 
-      fs.exists('/etc/init.d/autostart', (exists) => {
+      fs.exists(`/etc/init.d/${this.autoStactScriptName}`, (exists) => {
         if (exists) {
           return
         } else {
-          fs.writeFile('/etc/init.d/autostart', file, (err) => {
+          fs.writeFile(`/etc/init.d/${this.autoStactScriptName}`, file, async (err) => {
             if (!err) {
-              console.log('Pi: Created auto start file')
+              console.log(`Pi: Created ${this.autoStactScriptName} file`)
+              await this.executableAutoStart()
               resolved()
             }
           })
