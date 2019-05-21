@@ -43,7 +43,7 @@ class RaspberryPiService {
     }
     executableAutoStart() {
         return new Promise((resolved) => {
-            const command = `sudo chmod 755 /etc/init.d/${this.autoStactScriptName} && sudo update-rc.d ${this.autoStactScriptName} defaults`;
+            const command = `cd /etc/init.d/ && sudo chmod 755 /etc/init.d/${this.autoStactScriptName} && sudo update-rc.d ${this.autoStactScriptName} defaults`;
             child_process_1.exec(command, (err, stdout, stderr) => {
                 if (err) {
                     console.log('err', JSON.stringify(err));
@@ -76,7 +76,6 @@ class RaspberryPiService {
             fs.writeFile(`/home/pi/.config/lxsession/LXDE-pi/autostart`, file, (err) => __awaiter(this, void 0, void 0, function* () {
                 if (!err) {
                     console.log(`Pi: kiosk chrome setup`);
-                    yield this.executableAutoStart();
                     resolved();
                 }
             }));
@@ -105,6 +104,10 @@ class RaspberryPiService {
           stop)
               echo "pi wird beendet"
               # Beende Programm 
+              ;;
+          restart)
+              echo "pi wird neugestart" 
+              sudo pm2 kill && cd ~/apps/Piloteers-Dashboard-Pi-Gateway && sudo npm i -g pm2 && sudo git pull && sudo npm i && sudo npm run prod
               ;;
           *) 
               exit 1
