@@ -13,7 +13,7 @@ const child_process_1 = require("child_process");
 const fs = require("fs");
 class RaspberryPiService {
     constructor() {
-        this.autoStactScriptName = 'autostart';
+        this.autoStactScriptName = 'Dashboard';
         this.init();
     }
     init() {

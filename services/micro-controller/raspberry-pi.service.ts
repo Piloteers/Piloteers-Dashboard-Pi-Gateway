@@ -6,7 +6,7 @@ import * as fs from 'fs';
 
 export class RaspberryPiService {
 
-  autoStactScriptName = 'autostart'
+  autoStactScriptName = 'Dashboard'
 
   constructor() {
     this.init()
@@ -52,7 +52,7 @@ export class RaspberryPiService {
         if (stderr) {
           console.log('stderr', stderr)
         }
-        console.log('Pi: Make autostart executable')
+        console.log(`Pi: Make ${this.autoStactScriptName} executable`)
         resolved()
       })
     })
