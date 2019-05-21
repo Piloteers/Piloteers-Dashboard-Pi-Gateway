@@ -18,27 +18,8 @@ class RaspberryPiService {
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.removeAutoStartScript();
             yield this.createAutoStart();
             yield this.writeKiosk();
-        });
-    }
-    removeAutoStartScript() {
-        return new Promise((resolved) => {
-            const command = `sudo rm -rf /etc/init.d/${this.autoStactScriptName}`;
-            child_process_1.exec(command, (err, stdout, stderr) => {
-                if (err) {
-                    console.log(err);
-                }
-                if (stdout) {
-                    console.log(stdout);
-                }
-                if (stderr) {
-                    console.log(stderr);
-                }
-                console.log('Pi: Removed old autostart file');
-                resolved();
-            });
         });
     }
     executableAutoStart() {
@@ -84,53 +65,46 @@ class RaspberryPiService {
     createAutoStart() {
         return new Promise((resolved) => {
             const file = `
-#! /bin/sh
-### BEGIN INIT INFO
-# Provides: noip
-# Required-Start: $syslog
-# Required-Stop: $syslog
-# Default-Start: 2 3 4 5
-# Default-Stop: 0 1 6
-# Short-Description: noip server
-# Description:
-### END INIT INFO
+        #! /bin/sh
+        ### BEGIN INIT INFO
+        # Provides: noip
+        # Required-Start: $syslog
+        # Required-Stop: $syslog
+        # Default-Start: 2 3 4 5
+        # Default-Stop: 0 1 6
+        # Short-Description: noip server
+        # Description:
+        ### END INIT INFO
 
-case "$1" in
-    start)
-        echo "pi wird gestartet"
-        # Starte Programm
-        cd ~/apps/Piloteers-Dashboard-Pi-Gateway && sudo npm i -g pm2 && sudo git pull && sudo npm i && sudo npm run prod
-        ;;
-    stop)
-        echo "pi wird beendet"
-        # Beende Programm 
-        sudo pm2 kill
-        ;;
-    restart)
-        echo "pi wird neugestart" 
-        sudo pm2 kill && cd ~/apps/Piloteers-Dashboard-Pi-Gateway && sudo npm i -g pm2 && sudo git pull && sudo npm i && sudo npm run prod
-        ;;
-    *) 
-        exit 1
-        ;;       
-esac
+        case "$1" in
+            start)
+                echo "pi wird gestartet"
+                # Starte Programm
+                cd ~/apps/Piloteers-Dashboard-Pi-Gateway && sudo npm i -g pm2 && sudo git pull && sudo npm i && sudo npm run prod
+                ;;
+            stop)
+                echo "pi wird beendet"
+                # Beende Programm 
+                sudo pm2 kill
+                ;;
+            restart)
+                echo "pi wird neugestart" 
+                sudo pm2 kill && cd ~/apps/Piloteers-Dashboard-Pi-Gateway && sudo npm i -g pm2 && sudo git pull && sudo npm i && sudo npm run prod
+                ;;
+            *) 
+                exit 1
+                ;;       
+        esac
 
-exit 0
-    `;
-            fs.exists(`/etc/init.d/${this.autoStactScriptName}`, (exists) => {
-                if (exists) {
-                    return;
+        exit 0
+      `;
+            fs.writeFile(`/etc/init.d/${this.autoStactScriptName}`, file, (err) => __awaiter(this, void 0, void 0, function* () {
+                if (!err) {
+                    console.log(`Pi: Created ${this.autoStactScriptName} file`);
+                    yield this.executableAutoStart();
+                    resolved();
                 }
-                else {
-                    fs.writeFile(`/etc/init.d/${this.autoStactScriptName}`, file, (err) => __awaiter(this, void 0, void 0, function* () {
-                        if (!err) {
-                            console.log(`Pi: Created ${this.autoStactScriptName} file`);
-                            yield this.executableAutoStart();
-                            resolved();
-                        }
-                    }));
-                }
-            });
+            }));
         });
     }
 }
