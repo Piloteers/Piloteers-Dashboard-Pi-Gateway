@@ -15,6 +15,7 @@ export class RaspberryPiService {
   async init() {
     await this.removeAutoStartScript()
     await this.createAutoStart();
+    await this.startKiosk()
   }
 
   removeAutoStartScript() {
@@ -55,6 +56,26 @@ export class RaspberryPiService {
     })
   }
 
+  startKiosk() {
+    console.log('start kiosk')
+    return new Promise((resolved) => {
+      const command = `/usr/bin/chromium-browser -start-maximized --kiosk http://127.0.0.1:${env.serverPort}`
+
+      exec(command, (err, stdout, stderr) => {
+        if (err) {
+          console.log(err)
+        }
+        if (stdout) {
+          console.log(stdout)
+        }
+        if (stderr) {
+          console.log(stderr)
+        }
+        resolved()
+      })
+    })
+  }
+
   createAutoStart() {
     return new Promise((resolved) => {
       const file = `
@@ -74,7 +95,6 @@ export class RaspberryPiService {
               echo "pi wird gestartet"
               # Starte Programm
               cd ~/apps/Piloteers-Dashboard-Pi-Gateway && sudo npm i -g pm2 && sudo git pull && sudo npm i && sudo npm run prod
-              /usr/bin/chromium-browser -start-maximized --kiosk http://127.0.0.1:${env.serverPort}
               ;;
           stop)
               echo "pi wird beendet"
