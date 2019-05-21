@@ -59,7 +59,7 @@ export class RaspberryPiService {
   startKiosk() {
     console.log('start kiosk')
     return new Promise((resolved) => {
-      const command = `/usr/bin/chromium-browser -start-maximized --kiosk http://127.0.0.1:${env.serverPort}`
+      const command = `/usr/bin/chromium-browser -start-maximized --no-sandbox --kiosk http://127.0.0.1:${env.serverPort}`
 
       exec(command, (err, stdout, stderr) => {
         if (err) {
