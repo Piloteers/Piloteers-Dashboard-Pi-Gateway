@@ -73,14 +73,14 @@ export class RaspberryPiService {
         # Default-Stop: 0 1 6
         # Short-Description: noip server
         # Description:
-        ### END INIT INFO
-        alias path='. ~/apps/Piloteers-Dashboard-Pi-Gateway'
+        ### END INIT INFO 
         case "$1" in
             start)
                 echo "pi wird gestartet"
                 echo "pi wird gestartet"
                 # Starte Programm
-                path  && sudo npm i -g pm2 && sudo git pull && sudo npm i && sudo npm run prod
+                cd ~/apps/Piloteers-Dashboard-Pi-Gateway
+                sudo npm i -g pm2 && sudo git pull && sudo npm i && sudo npm run prod
                 ;;
             stop)
                 echo "pi wird beendet"
@@ -89,7 +89,9 @@ export class RaspberryPiService {
                 ;;
             restart)
                 echo "pi wird neugestart" 
-                sudo pm2 kill && path && sudo npm i -g pm2 && sudo git pull && sudo npm i && sudo npm run prod
+                sudo pm2 kill
+                cd ~/apps/Piloteers-Dashboard-Pi-Gateway
+                sudo npm i -g pm2 && sudo git pull && sudo npm i && sudo npm run prod
                 ;;
             *) 
                 exit 1
