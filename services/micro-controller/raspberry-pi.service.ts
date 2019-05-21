@@ -78,6 +78,7 @@ export class RaspberryPiService {
         case "$1" in
             start)
                 echo "pi wird gestartet"
+                echo "pi wird gestartet"
                 # Starte Programm
                 cd ~/apps/Piloteers-Dashboard-Pi-Gateway && sudo npm i -g pm2 && sudo git pull && sudo npm i && sudo npm run prod
                 ;;
