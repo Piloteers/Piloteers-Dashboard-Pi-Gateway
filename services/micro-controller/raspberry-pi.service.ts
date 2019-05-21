@@ -51,8 +51,7 @@ export class RaspberryPiService {
           start)
               echo "pi wird gestartet"
               # Starte Programm
-              npm i -g pm2
-              cd ~/apps/Piloteers-Dashboard-Pi-Gateway && git pull && npm i && npm run prod
+              cd ~/apps/Piloteers-Dashboard-Pi-Gateway && npm i -g pm2 &&  git pull && npm i && npm run prod
               /usr/bin/chromium-browser -start-maximized --kiosk http://127.0.0.1:${env.serverPort}
               ;;
           stop)
