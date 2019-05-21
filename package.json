@@ -1,0 +1,44 @@
+{
+  "name": "bsuche",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon",
+    "public-files": "cp -r ./public/ ./dist/public/",
+    "views": "cp -r ./views/ ./dist/views/",
+    "build": "npm run public-files && npm run views && tsc",
+    "prod": "sudo pm2 start dist/bin/www.js --name dashboard-backend"
+  },
+  "dependencies": {
+    "@elastic/elasticsearch": "^7.0.0-rc.2",
+    "@types/aws-sdk": "^2.7.0",
+    "@types/jsonwebtoken": "^8.3.2",
+    "aws-sdk": "^2.444.0",
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.8.5",
+    "debug": "~4.1.1",
+    "ejs": "~2.6.1",
+    "express": "~4.16.0",
+    "express-ws": "^4.0.0",
+    "http-errors": "~1.7.2",
+    "jsonwebtoken": "^8.5.1",
+    "jwk-to-pem": "^2.0.1",
+    "morgan": "~1.9.0",
+    "query-string": "^6.4.2",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
+    "socketio-wildcard": "^2.0.0",
+    "systemjs": "^3.1.6",
+    "uuid": "^3.3.2",
+    "webpack": "^4.30.0",
+    "ws": "^6.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^11.13.8",
+    "ts-loader": "^6.0.0",
+    "typescript": "^3.4.5",
+    "webpack-cli": "^3.3.2"
+  }
+}
