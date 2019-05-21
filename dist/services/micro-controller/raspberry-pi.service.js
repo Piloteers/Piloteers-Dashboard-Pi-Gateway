@@ -65,7 +65,7 @@ class RaspberryPiService {
     createAutoStart() {
         return new Promise((resolved) => {
             const file = `
-        #! /bin/sh
+        #! /bin/bash
         ### BEGIN INIT INFO
         # Provides: noip
         # Required-Start: $syslog
