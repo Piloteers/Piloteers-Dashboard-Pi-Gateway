@@ -42,6 +42,7 @@ export class RaspberryPiService {
       const command = `sudo chmod 755 /etc/init.d/${this.autoStactScriptName} && sudo update-rc.d ${this.autoStactScriptName} defaults`
 
       exec(command, (err, stdout, stderr) => {
+        console.log(err, stdout, stderr)
         if (err) {
           console.log('err', JSON.stringify(err))
         }
