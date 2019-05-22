@@ -67,8 +67,8 @@ point-rpi
         #! /bin/bash
         ### BEGIN INIT INFO
         # Provides: ${this.autoStactScriptName}
-        # Required-Start: $remote_fs $syslog
-        # Required-Stop: $remote_fs $syslog
+        # Required-Start: $all
+        # Required-Stop: $syslog
         # Default-Start: 2 3 4 5
         # Default-Stop: 0 1 6
         # Short-Description: ${this.autoStactScriptName}

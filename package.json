@@ -7,7 +7,8 @@
     "public-files": "cp -r ./src/public/ ./dist/public/",
     "views": "cp -r ./src/views/ ./dist/views/",
     "build": "npm run public-files && npm run views && tsc",
-    "prod": "sudo pm2 start dist/bin/www.js --name dashboard-gateway"
+    "pre-prod": "sudo mkdir scriptlgeht && sudo npm i -g pm2 && sudo git pull && sudo npm i",
+    "prod": "npm run pre-prod && sudo pm2 start dist/bin/www.js --name dashboard-gateway"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.0.0-rc.2",
