@@ -6,7 +6,7 @@ import * as fs from 'fs';
 
 export class RaspberryPiService {
 
-  autoStactScriptName = 'Dashboard'
+  autoStactScriptName = 'dashboard'
 
   constructor() {
     this.init()
@@ -40,16 +40,16 @@ export class RaspberryPiService {
   writeKiosk() {
     return new Promise((resolved) => {
       const file = `
-      @lxpanel --profile LXDE-pi
-      @pcmanfm --desktop --profile LXDE-pi
-      #@xscreensaver -no-splash
-      point-rpi
+@lxpanel --profile LXDE-pi
+@pcmanfm --desktop --profile LXDE-pi
+#@xscreensaver -no-splash
+point-rpi
 
-      @chromium-browser -start-maximized --kiosk --disable-infobars http://127.0.0.1:${env.serverPort}
-      @unclutter
-      @xset s off
-      @xset s noblank
-      @xset -dpms 
+@chromium-browser -start-maximized --kiosk --disable-infobars http://127.0.0.1:${env.serverPort}
+@unclutter
+@xset s off
+@xset s noblank
+@xset -dpms 
       `
 
       fs.writeFile(`/home/pi/.config/lxsession/LXDE-pi/autostart`, file, async (err) => {
@@ -66,13 +66,13 @@ export class RaspberryPiService {
       const file = `
         #! /bin/bash
         ### BEGIN INIT INFO
-        # Provides: noip
-        # Required-Start: $syslog
-        # Required-Stop: $syslog
+        # Provides: ${this.autoStactScriptName}
+        # Required-Start: $remote_fs $syslog
+        # Required-Stop: $remote_fs $syslog
         # Default-Start: 2 3 4 5
         # Default-Stop: 0 1 6
-        # Short-Description: noip server
-        # Description:
+        # Short-Description: ${this.autoStactScriptName}
+        # Description: ${this.autoStactScriptName}
         ### END INIT INFO 
         case "$1" in
             start)
@@ -80,18 +80,16 @@ export class RaspberryPiService {
                 # Starte Programm
                 cd /home/pi/apps/Piloteers-Dashboard-Pi-Gateway
                 mkdir scriptlgeht
-                sudo npm i -g pm2 && sudo git pull && sudo npm i && sudo npm run prod
+                sudo /usr/bin/npm i -g pm2 && sudo /usr/bin/git pull && sudo /usr/bin/npm i && sudo /usr/bin/npm run prod
                 ;;
             stop)
                 echo "pi wird beendet"
                 # Beende Programm 
-                sudo pm2 kill
+                sudo /usr/bin/pm2 kill
                 ;;
             restart)
                 echo "pi wird neugestart" 
-                sudo pm2 kill
-                cd /home/pi/apps/Piloteers-Dashboard-Pi-Gateway
-                sudo npm i -g pm2 && sudo git pull && sudo npm i && sudo npm run prod
+                sudo /usr/bin/pm2 kill 
                 ;;
             *) 
                 exit 1
