@@ -107,6 +107,9 @@ class RaspberryPiService {
                     yield this.executableAutoStart();
                     resolved();
                 }
+                else {
+                    console.log(err);
+                }
             }));
         });
     }

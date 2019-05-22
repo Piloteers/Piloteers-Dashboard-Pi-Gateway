@@ -106,6 +106,8 @@ export class RaspberryPiService {
           console.log(`Pi: Created ${this.autoStactScriptName} file`)
           await this.executableAutoStart()
           resolved()
+        } else {
+          console.log(err)
         }
       })
     })
