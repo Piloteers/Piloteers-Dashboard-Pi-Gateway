@@ -79,7 +79,7 @@ point-rpi
                 echo "pi wird gestartet" 
                 # Starte Programm
                 cd /home/pi/apps/Piloteers-Dashboard-Pi-Gateway
-                mkdir scriptlgeht
+                sudo mkdir scriptlgeht
                 sudo /usr/bin/npm i -g pm2 && sudo /usr/bin/git pull && sudo /usr/bin/npm i && sudo /usr/bin/npm run prod
                 ;;
             stop)
