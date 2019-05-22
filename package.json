@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "nodemon",
-    "public-files": "cp -r ./public/ ./dist/public/",
-    "views": "cp -r ./views/ ./dist/views/",
+    "public-files": "cp -r ./src/public/ ./dist/public/",
+    "views": "cp -r ./src/views/ ./dist/views/",
     "build": "npm run public-files && npm run views && tsc",
     "prod": "sudo pm2 start dist/bin/www.js --name dashboard-gateway"
   },

@@ -12,5 +12,5 @@
   "ignore": [
     "src/**/*.spec.ts"
   ],
-  "exec": "ts-node ./bin/www.ts"
+  "exec": "ts-node ./src/bin/www.ts"
 }
