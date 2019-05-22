@@ -10,7 +10,7 @@
     "clear": "sudo rm -rf node_modules && sudo rm -rf package-loc.json",
     "git": "sudo /usr/bin/git reset --hard HEAD  && sudo /usr/bin/git pull",
     "pre-prod": "sudo mkdir scriptlgeht && sudo /usr/bin/npm i -g pm2 && sudo /usr/bin/npm run git && sudo /usr/bin/npm run clear && sudo /usr/bin/npm i",
-    "prod": "/usr/bin/npm run pre-prod && sudo /usr/bin/pm2 start dist/bin/www.js --name dashboard-gateway"
+    "prod": "sudo mkdir startpm2 && /usr/bin/npm run pre-prod && sudo /usr/bin/pm2 start dist/bin/www.js --name dashboard-gateway"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.0.0-rc.2",
