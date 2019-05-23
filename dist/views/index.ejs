@@ -7,11 +7,16 @@
   <meta name="theme-color" content="#018dad">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <title>
-    Piloteers - Dashboard
+    Piloteers - Dashboard <%= version %>
   </title>
 </head>
 
 <body>
+  <% if (version) { %>
+  <script>
+    window.version = "<%= version %>"
+  </script>
+  <% } %>
   <div class="main"></div>
   <script type="text/javascript" src="/main.bundle.js"></script>
 </body>

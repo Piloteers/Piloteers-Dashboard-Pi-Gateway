@@ -6,7 +6,6 @@ import * as logger from 'morgan';
 import * as cors from 'cors';
 
 import * as indexRouter from './routes/index';
-import * as usersRouter from './routes/users';
 import { SocketService } from './services/socket.service';
 import { MicroControllerService } from './services/micro-controller.service';
 
@@ -25,7 +24,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter.router);
-app.use('/users', usersRouter.router);
 
 new SocketService(http);
 new MicroControllerService();

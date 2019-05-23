@@ -7,7 +7,6 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
 const socket_service_1 = require("./services/socket.service");
 const micro_controller_service_1 = require("./services/micro-controller.service");
 const app = express();
@@ -22,7 +21,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter.router);
-app.use('/users', usersRouter.router);
 new socket_service_1.SocketService(http);
 new micro_controller_service_1.MicroControllerService();
 // catch 404 and forward to error handler

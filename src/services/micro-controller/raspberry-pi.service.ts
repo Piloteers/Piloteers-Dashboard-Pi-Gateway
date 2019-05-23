@@ -37,7 +37,7 @@ export class RaspberryPiService {
 
   updateVersion() {
     return new Promise((resolved) => {
-      const command = `sudo npm run git && sudo npm i`
+      const command = `sudo npm run git && sudo npm i && sudo reboot`
 
       exec(command, (err, stdout, stderr) => {
         if (err) {
