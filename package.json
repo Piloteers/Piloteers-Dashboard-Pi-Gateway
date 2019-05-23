@@ -1,6 +1,6 @@
 {
-  "name": "bsuche",
-  "version": "0.0.12",
+  "name": "@piloteers/dashboard-pi-gateway",
+  "version": "0.0.14",
   "private": true,
   "scripts": {
     "start": "nodemon",

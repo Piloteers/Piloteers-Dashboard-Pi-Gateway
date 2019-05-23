@@ -19,7 +19,9 @@ file (You should insert these after the first line).
 
 
 ```
-xset s off         # don't activate screensaver
-xset -dpms         # disable DPMS (Energy Star) features.
-xset s noblank     # don't blank the video device
+sudo nano /etc/lightdm/lightdm.conf
+[SeatDefaults]
+xserver-command=X -s 0 -dpms
+
+export DISPLAY=:0 && xset s off -dpms 
 ```
