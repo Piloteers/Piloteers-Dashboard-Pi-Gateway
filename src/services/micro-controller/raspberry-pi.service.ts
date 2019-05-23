@@ -15,8 +15,11 @@ export class RaspberryPiService {
   }
 
   async init() {
-    await this.refreshTab();
-    await this.writeKiosk();
+    try {
+      await this.refreshTab();
+      await this.writeKiosk();
+    } catch (error) {
+    }
 
     await this.checkVersion();
     // every hours check for updates
@@ -33,7 +36,7 @@ export class RaspberryPiService {
         if (packageJson.version != version) {
           setTimeout(() => {
             // wait until socket is connected
-            new UpdateSocket().showUpdateScreen(packageJson.version);
+            UpdateSocket.showUpdateScreen(packageJson.version);
             this.updateVersion();
           }, 10 * 1000);
         }
@@ -48,7 +51,6 @@ export class RaspberryPiService {
   updateVersion() {
     return new Promise((resolved) => {
       const command = `sudo npm run git && sudo npm i && sudo reboot`
-
       exec(command, (err, stdout, stderr) => {
         if (err) {
           console.log('err', JSON.stringify(err))
@@ -60,7 +62,7 @@ export class RaspberryPiService {
           console.log('stderr', stderr)
         }
         console.log(`Pi: Refresh tab`)
-        resolved()
+
       })
     })
   }
@@ -103,8 +105,8 @@ point-rpi
       fs.writeFile(`/home/pi/.config/lxsession/LXDE-pi/autostart`, file, async (err) => {
         if (!err) {
           console.log(`Pi: kiosk chrome setup`)
-          resolved()
         }
+        resolved()
       })
     })
   }

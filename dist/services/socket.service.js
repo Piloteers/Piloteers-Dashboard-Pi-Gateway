@@ -10,7 +10,7 @@ class SocketService {
         this.io.on('connection', (socket) => {
             console.log('pi connected', socket.handshake.query.role, socket.handshake.query.userId);
             new socket_proxy_service_1.SocketProxyService(socket);
-            new update_socket_1.UpdateSocket(socket, this.io);
+            update_socket_1.UpdateSocket.setSocket(socket, this.io);
             socket.on('disconnect', () => {
                 console.log('user disconnected');
             });

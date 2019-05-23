@@ -15,7 +15,7 @@ export class SocketService {
       console.log('pi connected', socket.handshake.query.role, socket.handshake.query.userId);
 
       new SocketProxyService(socket);
-      new UpdateSocket(socket, this.io);
+      UpdateSocket.setSocket(socket, this.io);
 
       socket.on('disconnect', () => {
         console.log('user disconnected');

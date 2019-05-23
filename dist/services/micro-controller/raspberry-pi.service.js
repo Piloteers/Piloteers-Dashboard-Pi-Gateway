@@ -20,8 +20,12 @@ class RaspberryPiService {
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.refreshTab();
-            yield this.writeKiosk();
+            try {
+                yield this.refreshTab();
+                yield this.writeKiosk();
+            }
+            catch (error) {
+            }
             yield this.checkVersion();
             // every hours check for updates
             setInterval(() => {
@@ -37,7 +41,7 @@ class RaspberryPiService {
                 if (packageJson.version != version) {
                     setTimeout(() => {
                         // wait until socket is connected
-                        new update_socket_1.UpdateSocket().showUpdateScreen(packageJson.version);
+                        update_socket_1.UpdateSocket.showUpdateScreen(packageJson.version);
                         this.updateVersion();
                     }, 10 * 1000);
                 }
