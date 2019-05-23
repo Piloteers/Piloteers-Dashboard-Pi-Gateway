@@ -1,6 +1,6 @@
 {
   "name": "bsuche",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "private": true,
   "scripts": {
     "start": "nodemon",
@@ -8,7 +8,7 @@
     "views": "cp -r ./src/views/ ./dist/views/",
     "build": "npm run public-files && npm run views && tsc",
     "clear": "sudo rm -rf node_modules && sudo rm -rf package-lock.json",
-    "git": "sudo git reset --hard HEAD  && sudo git pull",
+    "git": " git reset --hard HEAD  &&  git pull",
     "pre-prod": "sudo npm i -g pm2 && sudo npm run git && sudo npm run clear && sudo npm i",
     "prod": "sudo pm2 start dist/bin/www.js --name dashboard-gateway"
   },
