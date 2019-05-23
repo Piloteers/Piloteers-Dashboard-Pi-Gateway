@@ -19,6 +19,7 @@ class RaspberryPiService {
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
+            yield this.refreshTab();
             yield this.checkVersion();
             yield this.writeKiosk();
         });
@@ -29,6 +30,7 @@ class RaspberryPiService {
                 let packageJson = JSON.parse(data);
                 console.log('Pi: Check version ', version, '=>', packageJson.version);
                 if (packageJson.version != version) {
+                    this.updateVersion();
                 }
                 resolved();
             }).catch((err) => {
@@ -38,7 +40,7 @@ class RaspberryPiService {
     }
     updateVersion() {
         return new Promise((resolved) => {
-            const command = `DISPLAY=:0 xdotool key F5`;
+            const command = `sudo npm run git && sudo npm i`;
             child_process_1.exec(command, (err, stdout, stderr) => {
                 if (err) {
                     console.log('err', JSON.stringify(err));

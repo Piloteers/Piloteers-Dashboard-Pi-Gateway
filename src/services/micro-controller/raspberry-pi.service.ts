@@ -14,8 +14,9 @@ export class RaspberryPiService {
   }
 
   async init() {
-    await this.checkVersion()
-    await this.writeKiosk()
+    await this.refreshTab();
+    await this.checkVersion();
+    await this.writeKiosk();
   }
 
   checkVersion() {
@@ -24,7 +25,7 @@ export class RaspberryPiService {
         let packageJson = JSON.parse(data)
         console.log('Pi: Check version ', version, '=>', packageJson.version)
         if (packageJson.version != version) {
-
+          this.updateVersion()
         }
         resolved()
       }).catch((err) => {
@@ -36,7 +37,7 @@ export class RaspberryPiService {
 
   updateVersion() {
     return new Promise((resolved) => {
-      const command = `DISPLAY=:0 xdotool key F5`
+      const command = `sudo npm run git && sudo npm i`
 
       exec(command, (err, stdout, stderr) => {
         if (err) {
