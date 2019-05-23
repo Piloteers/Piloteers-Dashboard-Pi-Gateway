@@ -13,7 +13,7 @@
     "prod": "sudo pm2 start dist/bin/www.js --name dashboard-gateway"
   },
   "dependencies": {
-    "@piloteers/dashboard-model": "^1.0.1",
+    "@piloteers/dashboard-model": "^1.0.2",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
     "debug": "~4.1.1",
