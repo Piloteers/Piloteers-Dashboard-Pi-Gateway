@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon",
-    "public-files": "cp -r ./src/public/ ./dist/public/",
+    "public-files": "rm -rf ./dist/public/ && mkdir ./dist/public && cp -r ./src/public/ ./dist/public/",
     "views": "cp -r ./src/views/ ./dist/views/",
     "build": "npm run public-files && npm run views && tsc",
     "clear": "sudo rm -rf node_modules && sudo rm -rf package-lock.json",
