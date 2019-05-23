@@ -65,7 +65,6 @@ class RaspberryPiService {
                     console.log('stderr', stderr);
                 }
                 console.log(`Pi: Refresh tab`);
-                resolved();
             });
         });
     }
@@ -104,8 +103,8 @@ point-rpi
             fs.writeFile(`/home/pi/.config/lxsession/LXDE-pi/autostart`, file, (err) => __awaiter(this, void 0, void 0, function* () {
                 if (!err) {
                     console.log(`Pi: kiosk chrome setup`);
-                    resolved();
                 }
+                resolved();
             }));
         });
     }
