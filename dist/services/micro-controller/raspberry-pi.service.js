@@ -30,6 +30,7 @@ class RaspberryPiService {
                 console.log('Pi: Check version ', version, '=>', packageJson.version);
                 if (packageJson.version != version) {
                 }
+                resolved();
             }).catch((err) => {
                 // Crawling failed...
             });

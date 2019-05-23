@@ -26,7 +26,7 @@ export class RaspberryPiService {
         if (packageJson.version != version) {
 
         }
-
+        resolved()
       }).catch((err) => {
         // Crawling failed...
       });
