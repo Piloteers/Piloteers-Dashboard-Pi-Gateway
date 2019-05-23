@@ -70,7 +70,7 @@ class RaspberryPiService {
     }
     refreshTab() {
         return new Promise((resolved) => {
-            const command = `DISPLAY=:0 xdotool key F5`;
+            const command = `DISPLAY=:0 xdotool key F5 && export DISPLAY=:0 && xset s off -dpms`;
             child_process_1.exec(command, (err, stdout, stderr) => {
                 if (err) {
                     console.log('err', JSON.stringify(err));
