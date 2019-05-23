@@ -40,7 +40,7 @@ class RaspberryPiService {
     }
     updateVersion() {
         return new Promise((resolved) => {
-            const command = `sudo npm run git && sudo npm i`;
+            const command = `sudo npm run git && sudo npm i && sudo reboot`;
             child_process_1.exec(command, (err, stdout, stderr) => {
                 if (err) {
                     console.log('err', JSON.stringify(err));
