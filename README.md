@@ -15,6 +15,9 @@ chromium-browser -start-maximized --kiosk --disable-infobars --app=http://127.0.
 
 Edit /etc/xdg/lxsession/LXDE-pi/autostart and add these three lines
 
+```
 @xset s off
 @xset -dpms
 @xset s noblank
+
+```
