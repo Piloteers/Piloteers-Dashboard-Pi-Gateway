@@ -13,11 +13,13 @@ chromium-browser -start-maximized --kiosk --disable-infobars --app=http://127.0.
 ```
 
 
-Edit /etc/xdg/lxsession/LXDE-pi/autostart and add these three lines
+You can enter the following three xset commands in /etc/X11/xinit/xinitrc
+file (You should insert these after the first line).
+
+
 
 ```
-@xset s off
-@xset -dpms
-@xset s noblank
-
+xset s off         # don't activate screensaver
+xset -dpms         # disable DPMS (Energy Star) features.
+xset s noblank     # don't blank the video device
 ```
