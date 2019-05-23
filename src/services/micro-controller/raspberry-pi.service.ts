@@ -5,6 +5,7 @@ import { exec } from "child_process";
 import * as fs from 'fs';
 const { version } = require('../../../package.json');
 import * as request from 'request-promise'
+import { UpdateSocket } from "../../sockets/update.socket";
 
 
 export class RaspberryPiService {
@@ -15,8 +16,13 @@ export class RaspberryPiService {
 
   async init() {
     await this.refreshTab();
-    await this.checkVersion();
     await this.writeKiosk();
+
+    await this.checkVersion();
+    // every hours check for updates
+    setInterval(() => {
+      this.checkVersion();
+    }, 60 * 60 * 1000)
   }
 
   checkVersion() {
@@ -25,7 +31,11 @@ export class RaspberryPiService {
         let packageJson = JSON.parse(data)
         console.log('Pi: Check version ', version, '=>', packageJson.version)
         if (packageJson.version != version) {
-          this.updateVersion()
+          setTimeout(() => {
+            // wait until socket is connected
+            new UpdateSocket().showUpdateScreen(packageJson.version);
+            this.updateVersion();
+          }, 10 * 1000);
         }
         resolved()
       }).catch((err) => {

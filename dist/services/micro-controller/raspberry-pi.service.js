@@ -13,6 +13,7 @@ const child_process_1 = require("child_process");
 const fs = require("fs");
 const { version } = require('../../../package.json');
 const request = require("request-promise");
+const update_socket_1 = require("../../sockets/update.socket");
 class RaspberryPiService {
     constructor() {
         this.init();
@@ -20,8 +21,12 @@ class RaspberryPiService {
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.refreshTab();
-            yield this.checkVersion();
             yield this.writeKiosk();
+            yield this.checkVersion();
+            // every hours check for updates
+            setInterval(() => {
+                this.checkVersion();
+            }, 60 * 60 * 1000);
         });
     }
     checkVersion() {
@@ -30,7 +35,11 @@ class RaspberryPiService {
                 let packageJson = JSON.parse(data);
                 console.log('Pi: Check version ', version, '=>', packageJson.version);
                 if (packageJson.version != version) {
-                    this.updateVersion();
+                    setTimeout(() => {
+                        // wait until socket is connected
+                        new update_socket_1.UpdateSocket().showUpdateScreen(packageJson.version);
+                        this.updateVersion();
+                    }, 10 * 1000);
                 }
                 resolved();
             }).catch((err) => {

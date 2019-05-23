@@ -3,12 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const socketIo = require("socket.io");
 const env_1 = require("../env");
 const socket_proxy_service_1 = require("./socket-proxy.service");
+const update_socket_1 = require("../sockets/update.socket");
 class SocketService {
     constructor(http) {
         this.io = socketIo(http);
         this.io.on('connection', (socket) => {
             console.log('pi connected', socket.handshake.query.role, socket.handshake.query.userId);
             new socket_proxy_service_1.SocketProxyService(socket);
+            new update_socket_1.UpdateSocket(socket, this.io);
             socket.on('disconnect', () => {
                 console.log('user disconnected');
             });
