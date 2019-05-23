@@ -6,7 +6,7 @@
     "start": "nodemon",
     "public-files": "rm -rf ./dist/public/ && mkdir ./dist/public && cp -r ./src/public/ ./dist/public/",
     "views": "cp -r ./src/views/ ./dist/views/",
-    "build": "npm run public-files && npm run views && git commit -a -m \"build\" && tsc && npm version patch",
+    "build": "npm run public-files && npm run views && tsc && git commit -a -m \"build\" && npm version patch",
     "clear": "sudo rm -rf node_modules && sudo rm -rf package-lock.json",
     "git": " git reset --hard HEAD  &&  git pull",
     "pre-prod": "sudo npm i -g pm2 && sudo npm run git && sudo npm run clear && sudo npm i",
