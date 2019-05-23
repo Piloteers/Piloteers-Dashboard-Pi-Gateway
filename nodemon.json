@@ -1,12 +1,6 @@
 {
   "watch": [
-    "app.ts",
-    "routes",
-    "bin",
-    "services",
-    "sockets",
-    "data-handlers",
-    "env.ts"
+    "./src"
   ],
   "ext": "ts",
   "ignore": [

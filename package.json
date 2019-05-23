@@ -7,10 +7,10 @@
     "public-files": "cp -r ./src/public/ ./dist/public/",
     "views": "cp -r ./src/views/ ./dist/views/",
     "build": "npm run public-files && npm run views && tsc",
-    "clear": "sudo rm -rf node_modules && sudo rm -rf package-loc.json",
-    "git": "sudo /usr/bin/git reset --hard HEAD  && sudo /usr/bin/git pull",
-    "pre-prod": "sudo /usr/bin/npm i -g pm2 && sudo /usr/bin/npm run git && sudo /usr/bin/npm run clear && sudo /usr/bin/npm i",
-    "prod": "sudo /usr/bin/npm run pre-prod && sudo /usr/bin/pm2 start dist/bin/www.js --name dashboard-gateway"
+    "clear": "sudo rm -rf node_modules && sudo rm -rf package-lock.json",
+    "git": "sudo git reset --hard HEAD  && sudo git pull",
+    "pre-prod": "sudo npm i -g pm2 && sudo npm run git && sudo npm run clear && sudo npm i",
+    "prod": "sudo pm2 start dist/bin/www.js --name dashboard-gateway"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.0.0-rc.2",

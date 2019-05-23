@@ -11,20 +11,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const env_1 = require("../../env");
 const child_process_1 = require("child_process");
 const fs = require("fs");
+const { version } = require('../../../package.json');
+const request = require("request-promise");
 class RaspberryPiService {
     constructor() {
-        this.autoStactScriptName = 'dashboard';
         this.init();
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.createAutoStart();
+            yield this.checkVersion();
             yield this.writeKiosk();
         });
     }
-    executableAutoStart() {
+    checkVersion() {
         return new Promise((resolved) => {
-            const command = `cd /etc/init.d/ && sudo chmod 755 /etc/init.d/${this.autoStactScriptName} && sudo update-rc.d ${this.autoStactScriptName} defaults`;
+            request(`https://raw.githubusercontent.com/Piloteers/Piloteers-Dashboard-Pi-Gateway/master/package.json`).then((data) => {
+                let packageJson = JSON.parse(data);
+                console.log('Pi: Check version ', version, '=>', packageJson.version);
+                if (packageJson.version != version) {
+                }
+            }).catch((err) => {
+                // Crawling failed...
+            });
+        });
+    }
+    updateVersion() {
+        return new Promise((resolved) => {
+            const command = `DISPLAY=:0 xdotool key F5`;
             child_process_1.exec(command, (err, stdout, stderr) => {
                 if (err) {
                     console.log('err', JSON.stringify(err));
@@ -35,7 +48,25 @@ class RaspberryPiService {
                 if (stderr) {
                     console.log('stderr', stderr);
                 }
-                console.log(`Pi: Make ${this.autoStactScriptName} executable`);
+                console.log(`Pi: Refresh tab`);
+                resolved();
+            });
+        });
+    }
+    refreshTab() {
+        return new Promise((resolved) => {
+            const command = `DISPLAY=:0 xdotool key F5`;
+            child_process_1.exec(command, (err, stdout, stderr) => {
+                if (err) {
+                    console.log('err', JSON.stringify(err));
+                }
+                if (stdout) {
+                    console.log('stdout', stdout);
+                }
+                if (stderr) {
+                    console.log('stderr', stderr);
+                }
+                console.log(`Pi: Refresh tab`);
                 resolved();
             });
         });
@@ -48,7 +79,7 @@ class RaspberryPiService {
 #@xscreensaver -no-splash
 point-rpi
 
-@chromium-browser -start-maximized --kiosk --disable-infobars http://127.0.0.1:${env_1.env.serverPort}
+@chromium-browser -start-maximized --kiosk --disable-infobars --app=http://127.0.0.1:${env_1.env.serverPort}
 @unclutter
 @xset s off
 @xset s noblank
@@ -58,53 +89,6 @@ point-rpi
                 if (!err) {
                     console.log(`Pi: kiosk chrome setup`);
                     resolved();
-                }
-            }));
-        });
-    }
-    createAutoStart() {
-        return new Promise((resolved) => {
-            const file = `
-        #! /bin/bash
-        ### BEGIN INIT INFO
-        # Provides: ${this.autoStactScriptName}
-        # Required-Start: $all
-        # Required-Stop: $syslog
-        # Default-Start: 2 3 4 5
-        # Default-Stop: 0 1 6
-        # Short-Description: ${this.autoStactScriptName}
-        # Description: ${this.autoStactScriptName}
-        ### END INIT INFO 
-        case "$1" in
-            start)
-                echo "pi wird gestartet" 
-                # Starte Programm
-                cd /home/pi/apps/Piloteers-Dashboard-Pi-Gateway && sudo mkdir scriptlgeht && sudo /usr/bin/npm i -g pm2 && sudo /usr/bin/git pull && sudo /usr/bin/npm i && sudo /usr/bin/npm run prod
-                ;;
-            stop)
-                echo "pi wird beendet"
-                # Beende Programm 
-                sudo /usr/bin/pm2 kill
-                ;;
-            restart)
-                echo "pi wird neugestart" 
-                sudo /usr/bin/pm2 kill 
-                ;;
-            *) 
-                exit 1
-                ;;       
-        esac
-
-        exit 0
-      `;
-            fs.writeFile(`/etc/init.d/${this.autoStactScriptName}`, file, (err) => __awaiter(this, void 0, void 0, function* () {
-                if (!err) {
-                    console.log(`Pi: Created ${this.autoStactScriptName} file`);
-                    yield this.executableAutoStart();
-                    resolved();
-                }
-                else {
-                    console.log(err);
                 }
             }));
         });
