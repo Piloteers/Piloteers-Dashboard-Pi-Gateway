@@ -1,6 +1,5 @@
 #!/usr/bin/env node
-
-import { env } from "../env";
+import { env } from '../env';
 
 /**
  * Module dependencies.
@@ -13,9 +12,9 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || env.serverPort);
+var port = normalizePort(process.env.PORT || env.gatewayPort);
 app.set('port', port);
-console.log(`Server listening on *:${env.serverPort}`);
+console.log(`Gateway listening on *:${env.gatewayPort}`);
 
 /**
  * Create HTTP server.
@@ -60,9 +59,7 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -85,8 +82,6 @@ function onError(error) {
 
 function onListening() {
   var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }

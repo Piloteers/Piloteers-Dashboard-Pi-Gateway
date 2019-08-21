@@ -10,7 +10,7 @@ import { SocketService } from './services/socket.service';
 import { MicroControllerService } from './services/micro-controller.service';
 
 const app = express();
-app.use(cors())
+app.use(cors());
 var http = require('http').Server(app);
 
 // view engine setup
@@ -26,15 +26,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter.router);
 
 new SocketService(http);
-new MicroControllerService();
+// new MicroControllerService();
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

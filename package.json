@@ -1,5 +1,5 @@
 {
-  "name": "@piloteers/dashboard-pi-gateway",
+  "name": "piloteers-dashboard-pi-gateway",
   "version": "0.0.20",
   "private": true,
   "scripts": {
@@ -10,10 +10,11 @@
     "clear": "sudo rm -rf node_modules && sudo rm -rf package-lock.json",
     "git": " git reset --hard HEAD  &&  git pull",
     "pre-prod": "sudo npm i -g pm2 && sudo npm run git && sudo npm run clear && sudo npm i",
-    "prod": "sudo pm2 start dist/bin/www.js --name dashboard-gateway"
+    "prod": "sudo pm2 start dist/bin/www.js --name dashboard-gateway",
+    "update-models": "rm -rf ./node_modules/@piloteers/dashboard-model && npm i @piloteers/dashboard-model"
   },
   "dependencies": {
-    "@piloteers/dashboard-model": "^1.0.2",
+    "@piloteers/dashboard-model": "^1.0.111",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
     "debug": "~4.1.1",
@@ -38,7 +39,7 @@
   "devDependencies": {
     "@types/node": "^11.13.8",
     "ts-loader": "^6.0.0",
-    "typescript": "^3.4.5",
+    "typescript": "^3.5.3",
     "webpack-cli": "^3.3.2"
   }
 }
