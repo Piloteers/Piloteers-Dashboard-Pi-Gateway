@@ -11,7 +11,7 @@ export class SocketProxyService {
     this.socket = socket;
 
     if (this.proxyClient == null) {
-      this.proxyClient = io(env.backendSocketUrl, {
+      this.proxyClient = io(env('backendSocketUrl'), {
         query: `deviceId=${socket.handshake.query.deviceId}&role=${socket.handshake.query.role}`
       });
       patch(this.proxyClient);

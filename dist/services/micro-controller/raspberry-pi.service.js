@@ -24,8 +24,7 @@ class RaspberryPiService {
                 yield this.refreshTab();
                 yield this.writeKiosk();
             }
-            catch (error) {
-            }
+            catch (error) { }
             yield this.checkVersion();
             // every hours check for updates
             setInterval(() => {
@@ -34,8 +33,9 @@ class RaspberryPiService {
         });
     }
     checkVersion() {
-        return new Promise((resolved) => {
-            request(`https://raw.githubusercontent.com/Piloteers/Piloteers-Dashboard-Pi-Gateway/master/package.json`).then((data) => {
+        return new Promise(resolved => {
+            request(`https://raw.githubusercontent.com/Piloteers/Piloteers-Dashboard-Pi-Gateway/master/package.json`)
+                .then(data => {
                 let packageJson = JSON.parse(data);
                 console.log('Pi: Check version ', version, '=>', packageJson.version);
                 if (packageJson.version != version) {
@@ -46,13 +46,14 @@ class RaspberryPiService {
                     }, 10 * 1000);
                 }
                 resolved();
-            }).catch((err) => {
+            })
+                .catch(err => {
                 // Crawling failed...
             });
         });
     }
     updateVersion() {
-        return new Promise((resolved) => {
+        return new Promise(resolved => {
             const command = `sudo npm run git && sudo npm i && sudo reboot`;
             child_process_1.exec(command, (err, stdout, stderr) => {
                 if (err) {
@@ -69,7 +70,7 @@ class RaspberryPiService {
         });
     }
     refreshTab() {
-        return new Promise((resolved) => {
+        return new Promise(resolved => {
             const command = `DISPLAY=:0 xdotool key F5 && export DISPLAY=:0 && xset s off -dpms`;
             child_process_1.exec(command, (err, stdout, stderr) => {
                 if (err) {
@@ -87,14 +88,14 @@ class RaspberryPiService {
         });
     }
     writeKiosk() {
-        return new Promise((resolved) => {
+        return new Promise(resolved => {
             const file = `
 @lxpanel --profile LXDE-pi
 @pcmanfm --desktop --profile LXDE-pi
 #@xscreensaver -no-splash
 point-rpi
 
-@chromium-browser -start-maximized --kiosk --disable-infobars --app=http://127.0.0.1:${env_1.env.serverPort}
+@chromium-browser -start-maximized --kiosk --disable-infobars --app=http://127.0.0.1:${env_1.env('serverPort')}
 @unclutter
 @xset s off
 @xset s noblank

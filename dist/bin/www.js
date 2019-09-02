@@ -11,9 +11,9 @@ var http = require('http');
 /**
  * Get port from environment and store in Express.
  */
-var port = normalizePort(process.env.PORT || env_1.env.serverPort);
+var port = normalizePort(process.env.PORT || env_1.env('gatewayPort'));
 app.set('port', port);
-console.log(`Server listening on *:${env_1.env.serverPort}`);
+console.log(`Gateway listening on *:${env_1.env('gatewayPort')}`);
 /**
  * Create HTTP server.
  */
@@ -46,9 +46,7 @@ function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;
     }
-    var bind = typeof port === 'string'
-        ? 'Pipe ' + port
-        : 'Port ' + port;
+    var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
     // handle specific listen errors with friendly messages
     switch (error.code) {
         case 'EACCES':
@@ -68,9 +66,7 @@ function onError(error) {
  */
 function onListening() {
     var addr = server.address();
-    var bind = typeof addr === 'string'
-        ? 'pipe ' + addr
-        : 'port ' + addr.port;
+    var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
     debug('Listening on ' + bind);
 }
 //# sourceMappingURL=www.js.map

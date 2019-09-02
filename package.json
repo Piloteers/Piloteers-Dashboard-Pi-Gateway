@@ -10,7 +10,7 @@
     "clear": "sudo rm -rf node_modules && sudo rm -rf package-lock.json",
     "git": " git reset --hard HEAD  &&  git pull",
     "pre-prod": "sudo npm i -g pm2 && sudo npm run git && sudo npm run clear && sudo npm i",
-    "prod": "sudo pm2 start dist/bin/www.js --name dashboard-gateway",
+    "prod": "sudo pm2 start dist/bin/www.js --name dashboard-gateway --env production",
     "update-models": "rm -rf ./node_modules/@piloteers/dashboard-model && npm i @piloteers/dashboard-model"
   },
   "dependencies": {

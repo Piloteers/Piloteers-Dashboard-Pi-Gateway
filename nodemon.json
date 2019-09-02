@@ -1,10 +1,6 @@
 {
-  "watch": [
-    "./src"
-  ],
+  "watch": ["./src"],
   "ext": "ts",
-  "ignore": [
-    "src/**/*.spec.ts"
-  ],
-  "exec": "ts-node ./src/bin/www.ts"
+  "ignore": ["src/**/*.spec.ts"],
+  "exec": "export NODE_ENV=development && ts-node ./src/bin/www.ts"
 }
