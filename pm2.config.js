@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'dashboard-gateway',
-      script: './dist/app.js',
+      script: './dist/bin/www.js',
       watch: true,
       env: {
         PORT: 3000,

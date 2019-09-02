@@ -90,7 +90,7 @@ export class RaspberryPiService {
 #@xscreensaver -no-splash
 point-rpi
 
-@chromium-browser -start-maximized --kiosk --disable-infobars --app=http://127.0.0.1:${env('serverPort')}
+@chromium-browser -start-maximized --kiosk --disable-infobars --app=http://127.0.0.1:${env('gatewayPort')}
 @unclutter
 @xset s off
 @xset s noblank
