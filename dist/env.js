@@ -1,9 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function env(val) {
-    console.log('bla4');
-    console.log(process.env.NODE_ENV);
-    const NODE_ENV = typeof process.env.env == 'string' ? process.env.env : process.env.NODE_ENV;
+    const NODE_ENV = process.env.NODE_ENV || process.env.env;
     const env = {
         development: {
             gatewaySocketPort: 3003,
