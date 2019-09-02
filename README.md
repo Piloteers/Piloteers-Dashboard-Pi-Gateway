@@ -53,3 +53,10 @@ cd /home/pi/apps/Piloteers-Dashboard-Pi-Gateway && sudo /usr/bin/npm run prod
 
 exit 0
 ```
+
+Refreh Chronium
+
+```
+pi@raspberrypi:~ $ export DISPLAY=:0
+pi@raspberrypi:~ $ xdotool key "ctrl+F5"
+```
