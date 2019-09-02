@@ -1,5 +1,5 @@
 export function env(val) {
-  console.log('bla3');
+  console.log('bla4');
   console.log(process.env);
   const NODE_ENV = process.env.env || process.env.NODE_ENV;
   const env = {
