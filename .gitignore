@@ -1,19 +1,9 @@
 # OSX
 .DS_Store
 .awcache
-
-src/models-shared/**/*
+ 
 # node.js
 node_modules/
 npm-debug.log
 package-lock.json
-
-# Build 
-environment/development.js
-environment/staging.js
-environment/production.js
-src/models/generated/*.ts
-
-# ENV
-*.env
-src/models-shared 
+ 
