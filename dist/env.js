@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function env(val) {
+    console.log(process.env);
     const NODE_ENV = process.env.NODE_ENV;
     const env = {
         development: {
@@ -16,7 +17,6 @@ function env(val) {
             backendServerUrl: 'http://localhost:3000'
         }
     };
-    console.log(process.env.NODE_ENV);
     return env[NODE_ENV][val];
 }
 exports.env = env;

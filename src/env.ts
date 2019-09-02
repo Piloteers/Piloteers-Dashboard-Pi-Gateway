@@ -1,4 +1,5 @@
 export function env(val) {
+  console.log(process.env);
   const NODE_ENV = process.env.NODE_ENV;
   const env = {
     development: {
@@ -14,6 +15,5 @@ export function env(val) {
       backendServerUrl: 'http://localhost:3000'
     }
   };
-  console.log(process.env.NODE_ENV);
   return env[NODE_ENV][val];
 }

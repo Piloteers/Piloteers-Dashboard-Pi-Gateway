@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'myapp',
+      name: 'dashboard-gateway',
       script: './dist/app.js',
       watch: true,
       env: {
