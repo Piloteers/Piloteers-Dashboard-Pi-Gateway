@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 function env(val) {
     console.log('bla4');
-    console.log(process.env);
+    console.log(process.env.env);
     const NODE_ENV = process.env.env || process.env.NODE_ENV;
     const env = {
         development: {
