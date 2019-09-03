@@ -12,7 +12,7 @@
     "pre-prod": "sudo npm i -g pm2 && sudo npm run git && sudo npm run clear && sudo npm i",
     "prod": "sudo pm2 start pm2.config.js --env production --name dashboard-gateway",
     "update-models": "rm -rf ./node_modules/@piloteers/dashboard-model && npm i @piloteers/dashboard-model",
-    "deploy": "sudo npm run git && sudo npm run clear && sudo pm2 restart all"
+    "update-device": "sudo npm run git && sudo npm run clear && sudo pm2 restart all"
   },
   "dependencies": {
     "@piloteers/dashboard-model": "^1.0.131",

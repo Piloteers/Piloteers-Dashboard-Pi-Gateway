@@ -31,7 +31,7 @@ class RaspberryPiService {
     }
     updateVersion() {
         return new Promise(resolved => {
-            const command = `sudo npm run deploy`;
+            const command = `sudo npm run update-device`;
             child_process_1.exec(command, (err, stdout, stderr) => {
                 if (err) {
                     console.log('err', JSON.stringify(err));
