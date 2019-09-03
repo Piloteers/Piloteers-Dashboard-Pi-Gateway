@@ -23,7 +23,7 @@ class RaspberryPiService {
 
   updateVersion() {
     return new Promise(resolved => {
-      const command = `sudo npm run git && sudo npm run clear && sudo npm i && sudo reboot`;
+      const command = `sudo npm run deploy`;
       exec(command, (err, stdout, stderr) => {
         if (err) {
           console.log('err', JSON.stringify(err));
@@ -35,6 +35,7 @@ class RaspberryPiService {
           console.log('stderr', stderr);
         }
         console.log(`Pi: Update version`);
+        this.refreshTab();
       });
     });
   }

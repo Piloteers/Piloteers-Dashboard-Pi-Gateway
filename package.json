@@ -8,11 +8,11 @@
     "views": "cp -r ./src/views/ ./dist/views/",
     "build": "npm run public-files && npm run views && tsc && git add . && git commit -a -m \"build\" && git push && npm version patch",
     "clear": "sudo rm -rf node_modules && sudo rm -rf package-lock.json",
-    "git": " git reset --hard HEAD  &&  git pull",
+    "git": " git reset --hard HEAD && git pull",
     "pre-prod": "sudo npm i -g pm2 && sudo npm run git && sudo npm run clear && sudo npm i",
     "prod": "sudo pm2 start pm2.config.js --env production --name dashboard-gateway",
     "update-models": "rm -rf ./node_modules/@piloteers/dashboard-model && npm i @piloteers/dashboard-model",
-    "deploy": "sudo git pull && sudo pm2 restart all"
+    "deploy": "sudo npm run git && sudo npm run clear && sudo pm2 restart all"
   },
   "dependencies": {
     "@piloteers/dashboard-model": "^1.0.131",
