@@ -1,15 +1,15 @@
+import { raspberryPiService } from './micro-controller/raspberry-pi.service';
 
-import { RaspberryPiService } from "./micro-controller/raspberry-pi.service";
+class MicroControllerService {
+  constructor() {}
 
-export class MicroControllerService {
-
-  constructor() {
-    new RaspberryPiService()
+  init() {
+    raspberryPiService.init();
   }
 
-
+  updateVersion() {
+    raspberryPiService.updateVersion();
+  }
 }
 
-
-
-
+export const microControllerService = Object.freeze(new MicroControllerService());

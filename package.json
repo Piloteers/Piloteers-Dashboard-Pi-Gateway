@@ -15,7 +15,7 @@
     "deploy": "sudo git pull && sudo pm2 restart all"
   },
   "dependencies": {
-    "@piloteers/dashboard-model": "^1.0.111",
+    "@piloteers/dashboard-model": "^1.0.131",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
     "debug": "~4.1.1",

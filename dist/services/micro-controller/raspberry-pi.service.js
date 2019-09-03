@@ -12,11 +12,13 @@ const env_1 = require("../../env");
 const child_process_1 = require("child_process");
 const fs = require("fs");
 const { version } = require('../../../package.json');
-const request = require("request-promise");
-const update_socket_1 = require("../../sockets/update.socket");
 class RaspberryPiService {
     constructor() {
-        this.init();
+        this.instance = null;
+        if (!this.instance) {
+            this.instance = this;
+        }
+        return this.instance;
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -25,36 +27,11 @@ class RaspberryPiService {
                 yield this.writeKiosk();
             }
             catch (error) { }
-            yield this.checkVersion();
-            // every hours check for updates
-            setInterval(() => {
-                this.checkVersion();
-            }, 60 * 60 * 1000);
-        });
-    }
-    checkVersion() {
-        return new Promise(resolved => {
-            request(`https://raw.githubusercontent.com/Piloteers/Piloteers-Dashboard-Pi-Gateway/master/package.json`)
-                .then(data => {
-                let packageJson = JSON.parse(data);
-                console.log('Pi: Check version ', version, '=>', packageJson.version);
-                if (packageJson.version != version) {
-                    setTimeout(() => {
-                        // wait until socket is connected
-                        update_socket_1.UpdateSocket.showUpdateScreen(packageJson.version);
-                        this.updateVersion();
-                    }, 10 * 1000);
-                }
-                resolved();
-            })
-                .catch(err => {
-                // Crawling failed...
-            });
         });
     }
     updateVersion() {
         return new Promise(resolved => {
-            const command = `sudo npm run git && sudo npm i && sudo reboot`;
+            const command = `sudo npm run git && sudo npm run clear && sudo npm i && sudo reboot`;
             child_process_1.exec(command, (err, stdout, stderr) => {
                 if (err) {
                     console.log('err', JSON.stringify(err));
@@ -65,7 +42,7 @@ class RaspberryPiService {
                 if (stderr) {
                     console.log('stderr', stderr);
                 }
-                console.log(`Pi: Refresh tab`);
+                console.log(`Pi: Update version`);
             });
         });
     }
@@ -110,5 +87,5 @@ point-rpi
         });
     }
 }
-exports.RaspberryPiService = RaspberryPiService;
+exports.raspberryPiService = Object.freeze(new RaspberryPiService());
 //# sourceMappingURL=raspberry-pi.service.js.map

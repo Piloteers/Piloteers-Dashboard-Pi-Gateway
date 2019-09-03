@@ -9,7 +9,6 @@ class SocketService {
         this.io.on('connection', socket => {
             console.log('device connected', socket.handshake.query.role, socket.handshake.query.deviceId);
             const socketProxyService = new socket_proxy_service_1.SocketProxyService(socket);
-            // UpdateSocket.setSocket(socket, this.io);
             socket.on('disconnect', () => {
                 console.log('proxy disconnected');
                 socketProxyService.disconnectProxy();

@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter.router);
 new socket_service_1.SocketService(http);
-// new MicroControllerService();
+// microControllerService.init();
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next(createError(404));

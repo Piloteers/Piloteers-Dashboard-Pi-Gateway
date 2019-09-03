@@ -2,7 +2,7 @@ import * as socketIo from 'socket.io';
 import * as uuid from 'uuid/v1';
 import { env } from '../env';
 import { SocketProxyService } from './socket-proxy.service';
-import { UpdateSocket } from '../sockets/update.socket';
+import { CommandSocket } from '../sockets/command.socket';
 export class SocketService {
   io: any;
   constructor(http) {
@@ -12,7 +12,6 @@ export class SocketService {
       console.log('device connected', socket.handshake.query.role, socket.handshake.query.deviceId);
 
       const socketProxyService = new SocketProxyService(socket);
-      // UpdateSocket.setSocket(socket, this.io);
 
       socket.on('disconnect', () => {
         console.log('proxy disconnected');

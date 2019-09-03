@@ -3,11 +3,15 @@ import { exec } from 'child_process';
 import * as fs from 'fs';
 const { version } = require('../../../package.json');
 import * as request from 'request-promise';
-import { UpdateSocket } from '../../sockets/update.socket';
 
-export class RaspberryPiService {
+class RaspberryPiService {
+  instance: any = null;
+
   constructor() {
-    this.init();
+    if (!this.instance) {
+      this.instance = this;
+    }
+    return this.instance;
   }
 
   async init() {
@@ -15,38 +19,11 @@ export class RaspberryPiService {
       await this.refreshTab();
       await this.writeKiosk();
     } catch (error) {}
-
-    await this.checkVersion();
-    // every hours check for updates
-    setInterval(() => {
-      this.checkVersion();
-    }, 60 * 60 * 1000);
-  }
-
-  checkVersion() {
-    return new Promise(resolved => {
-      request(`https://raw.githubusercontent.com/Piloteers/Piloteers-Dashboard-Pi-Gateway/master/package.json`)
-        .then(data => {
-          let packageJson = JSON.parse(data);
-          console.log('Pi: Check version ', version, '=>', packageJson.version);
-          if (packageJson.version != version) {
-            setTimeout(() => {
-              // wait until socket is connected
-              UpdateSocket.showUpdateScreen(packageJson.version);
-              this.updateVersion();
-            }, 10 * 1000);
-          }
-          resolved();
-        })
-        .catch(err => {
-          // Crawling failed...
-        });
-    });
   }
 
   updateVersion() {
     return new Promise(resolved => {
-      const command = `sudo npm run git && sudo npm i && sudo reboot`;
+      const command = `sudo npm run git && sudo npm run clear && sudo npm i && sudo reboot`;
       exec(command, (err, stdout, stderr) => {
         if (err) {
           console.log('err', JSON.stringify(err));
@@ -57,7 +34,7 @@ export class RaspberryPiService {
         if (stderr) {
           console.log('stderr', stderr);
         }
-        console.log(`Pi: Refresh tab`);
+        console.log(`Pi: Update version`);
       });
     });
   }
@@ -105,3 +82,5 @@ point-rpi
     });
   }
 }
+
+export const raspberryPiService = Object.freeze(new RaspberryPiService());

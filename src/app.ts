@@ -7,7 +7,7 @@ import * as cors from 'cors';
 
 import * as indexRouter from './routes/index';
 import { SocketService } from './services/socket.service';
-import { MicroControllerService } from './services/micro-controller.service';
+import { microControllerService } from './services/micro-controller.service';
 
 const app = express();
 app.use(cors());
@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter.router);
 
 new SocketService(http);
-// new MicroControllerService();
+// microControllerService.init();
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

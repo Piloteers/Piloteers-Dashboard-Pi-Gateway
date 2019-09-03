@@ -1,6 +1,7 @@
 import { env } from '../env';
 import * as io from 'socket.io-client';
 import * as wildcard from 'socketio-wildcard';
+import { CommandSocket } from '../sockets/command.socket';
 let patch = wildcard(io.Manager);
 
 export class SocketProxyService {
@@ -25,11 +26,15 @@ export class SocketProxyService {
   }
 
   createClientProxy() {
+    new CommandSocket(this.socket, this.proxyClient);
     this.proxyClient.on('*', data => {
       if (typeof data.data[0] === 'string') {
-        console.log('out', data.data[0]);
-
-        this.socket.emit(...data.data);
+        if (data.data[0].startsWith('SG_')) {
+          console.log('Server Command: ', data.data[0]);
+        } else {
+          console.log('out', data.data[0]);
+          this.socket.emit(...data.data);
+        }
       }
     });
   }

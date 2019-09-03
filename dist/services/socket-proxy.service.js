@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const env_1 = require("../env");
 const io = require("socket.io-client");
 const wildcard = require("socketio-wildcard");
+const command_socket_1 = require("../sockets/command.socket");
 let patch = wildcard(io.Manager);
 class SocketProxyService {
     constructor(socket) {
@@ -30,10 +31,16 @@ class SocketProxyService {
         }));
     }
     createClientProxy() {
+        new command_socket_1.CommandSocket(this.socket, this.proxyClient);
         this.proxyClient.on('*', data => {
             if (typeof data.data[0] === 'string') {
-                console.log('out', data.data[0]);
-                this.socket.emit(...data.data);
+                if (data.data[0].startsWith('SG_')) {
+                    console.log('Server Command: ', data.data[0]);
+                }
+                else {
+                    console.log('out', data.data[0]);
+                    this.socket.emit(...data.data);
+                }
             }
         });
     }
