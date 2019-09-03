@@ -60,3 +60,6 @@ Refreh Chronium
 pi@raspberrypi:~ $ export DISPLAY=:0
 pi@raspberrypi:~ $ xdotool key "ctrl+F5"
 ```
+
+Get display resolution
+fbset -s
