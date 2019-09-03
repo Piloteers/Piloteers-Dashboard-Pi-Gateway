@@ -32,17 +32,16 @@ class RaspberryPiService {
     updateVersion() {
         return new Promise(resolved => {
             const command = `sudo npm run update-device`;
-            child_process_1.exec(command, (err, stdout, stderr) => {
-                if (err) {
-                    console.log('err', JSON.stringify(err));
-                }
-                if (stdout) {
-                    console.log('stdout', stdout);
-                }
-                if (stderr) {
-                    console.log('stderr', stderr);
-                }
-                console.log(`Pi: Update version`);
+            const { spawn } = require('child_process');
+            const ls = spawn(command);
+            ls.stdout.on('data', data => {
+                console.log(`stdout: ${data}`);
+            });
+            ls.stderr.on('data', data => {
+                console.error(`stderr: ${data}`);
+            });
+            ls.on('close', code => {
+                console.log(`child process exited with code ${code}`);
                 this.refreshTab();
             });
         });
