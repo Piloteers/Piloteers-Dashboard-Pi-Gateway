@@ -12,6 +12,7 @@ const env_1 = require("../env");
 const io = require("socket.io-client");
 const wildcard = require("socketio-wildcard");
 const command_socket_1 = require("../sockets/command.socket");
+const dashboard_model_1 = require("@piloteers/dashboard-model");
 let patch = wildcard(io.Manager);
 class SocketProxyService {
     constructor(socket) {
@@ -22,7 +23,7 @@ class SocketProxyService {
             this.proxyClient = io(env_1.env('backendSocketUrl'), {
                 query: `deviceId=${socket.handshake.query.deviceId}&role=${socket.handshake.query.role}`
             });
-            this.commandSocket = new command_socket_1.CommandSocket(this.socket);
+            new command_socket_1.CommandSocket(this.socket, this.proxyClient);
             patch(this.proxyClient);
             this.createClientProxy();
         }
@@ -32,10 +33,13 @@ class SocketProxyService {
         }));
     }
     createClientProxy() {
+        this.proxyClient.on(dashboard_model_1.RoutesEnum.SG_COMMAND_UPDATE_VERSION, data => {
+            console.log('geht doch');
+        });
         this.proxyClient.on('*', data => {
             if (typeof data.data[0] === 'string') {
                 if (data.data[0].startsWith('SG_')) {
-                    this.commandSocket.on(data.data[0], data.data);
+                    console.log('Server Command: ', data.data[0]);
                 }
                 else {
                     console.log('out', data.data[0]);
