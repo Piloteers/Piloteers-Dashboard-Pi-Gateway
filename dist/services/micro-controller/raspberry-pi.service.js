@@ -48,6 +48,7 @@ class RaspberryPiService {
         });
     }
     refreshTab() {
+        console.log('Refresh tab');
         return new Promise(resolved => {
             const command = `export DISPLAY=:0 && xdotool key "ctrl+F5" && xset s noblank && xset s off && xset -dpms`;
             child_process_1.exec(command, (error, stdout, stderr) => {
