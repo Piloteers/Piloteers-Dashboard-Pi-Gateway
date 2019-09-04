@@ -8,6 +8,7 @@ let patch = wildcard(io.Manager);
 export class SocketProxyService {
   proxyClient = null;
   socket = null;
+  commandSocket;
 
   constructor(socket) {
     this.socket = socket;
@@ -16,7 +17,8 @@ export class SocketProxyService {
       this.proxyClient = io(env('backendSocketUrl'), {
         query: `deviceId=${socket.handshake.query.deviceId}&role=${socket.handshake.query.role}`
       });
-      new CommandSocket(this.socket, this.proxyClient);
+
+      this.commandSocket = new CommandSocket(this.socket);
       patch(this.proxyClient);
       this.createClientProxy();
     }
@@ -35,7 +37,7 @@ export class SocketProxyService {
     this.proxyClient.on('*', data => {
       if (typeof data.data[0] === 'string') {
         if (data.data[0].startsWith('SG_')) {
-          console.log('Server Command: ', data.data[0]);
+          this.commandSocket.on(data.data[0], data.data);
         } else {
           console.log('out', data.data[0]);
           this.socket.emit(...data.data);
