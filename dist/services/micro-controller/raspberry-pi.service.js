@@ -24,9 +24,8 @@ class RaspberryPiService {
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('init');
-            yield this.refreshTab();
             try {
+                yield this.refreshTab();
                 yield this.setKiosk();
                 yield this.setAutostart();
                 yield this.setScreenSettings();
@@ -37,7 +36,7 @@ class RaspberryPiService {
         });
     }
     updateVersion() {
-        console.log('start update');
+        console.log('Controller: updateVersion');
         return new Promise(resolved => {
             const command = `sudo git reset --hard HEAD && sudo git pull && sudo pm2 restart all`;
             child_process_1.exec(command, (error, stdout, stderr) => {
@@ -52,7 +51,7 @@ class RaspberryPiService {
         });
     }
     refreshTab() {
-        console.log('Refresh tab');
+        console.log('Controller: refreshTab');
         return new Promise(resolved => {
             const command = `export DISPLAY=:0 && export XAUTHORITY=/home/pi/.Xauthority && xdotool key "ctrl+F5" && xset s noblank && xset s off && xset -dpms`;
             child_process_1.exec(command, (error, stdout, stderr) => {
@@ -67,9 +66,11 @@ class RaspberryPiService {
         });
     }
     cleanStartup() {
+        console.log('Controller: cleanStartup');
         return new Promise(resolved => { });
     }
     removeCursor() {
+        console.log('Controller: removeCursor');
         return new Promise(resolved => {
             const command = `sudo rm /etc/xdg/autostart/piwiz.desktop`;
             child_process_1.exec(command, (error, stdout, stderr) => {
@@ -84,11 +85,11 @@ class RaspberryPiService {
         });
     }
     setKiosk() {
+        console.log('Controller: setKiosk');
         return new Promise(resolved => {
             fs.writeFile(`/home/pi/.config/lxsession/LXDE-pi/autostart`, lxde_autostart_file_1.LxdeAutoStartFile, (err) => __awaiter(this, void 0, void 0, function* () {
-                if (!err) {
-                    console.log(`Err: setKiosk`);
-                    console.log(err);
+                if (err) {
+                    console.log(`Err: setKiosk`, err);
                 }
                 else {
                     resolved();
@@ -97,10 +98,11 @@ class RaspberryPiService {
         });
     }
     setAutostart() {
+        console.log('Controller: setAutostart');
         return new Promise(resolved => {
             fs.writeFile(`/etc/rc.local`, rc_local_file_1.RcLocalFile, (err) => __awaiter(this, void 0, void 0, function* () {
-                if (!err) {
-                    console.log(`Err: setAutostart`);
+                if (err) {
+                    console.log(`Err: setAutostart`, err);
                     console.log(err);
                 }
                 else {
@@ -110,10 +112,11 @@ class RaspberryPiService {
         });
     }
     setScreenSettings() {
+        console.log('Controller: setScreenSettings');
         return new Promise(resolved => {
             fs.writeFile(`/etc/lightdm/lightdm.conf`, lightdm_file_1.LightdmFile, (err) => __awaiter(this, void 0, void 0, function* () {
-                if (!err) {
-                    console.log(`Err: setScreenSettings`);
+                if (err) {
+                    console.log(`Err: setScreenSettings`, err);
                 }
                 else {
                     resolved();
