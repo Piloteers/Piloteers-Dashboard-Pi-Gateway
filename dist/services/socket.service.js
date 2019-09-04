@@ -14,8 +14,8 @@ class SocketService {
                 socketProxyService.disconnectProxy();
             });
         });
-        http.listen(env_1.env('gatewayPort'), function () {
-            console.log(`Gateway Socket listening on *:${env_1.env('gatewayPort')}`);
+        http.listen(env_1.env('gatewaySocketPort'), function () {
+            console.log(`Gateway Socket listening on *:${env_1.env('gatewaySocketPort')}`);
         });
     }
 }

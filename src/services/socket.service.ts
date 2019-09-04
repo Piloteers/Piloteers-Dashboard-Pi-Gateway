@@ -19,8 +19,8 @@ export class SocketService {
       });
     });
 
-    http.listen(env('gatewayPort'), function() {
-      console.log(`Gateway Socket listening on *:${env('gatewayPort')}`);
+    http.listen(env('gatewaySocketPort'), function() {
+      console.log(`Gateway Socket listening on *:${env('gatewaySocketPort')}`);
     });
   }
 }
