@@ -95,6 +95,7 @@ class RaspberryPiService {
       fs.writeFile(`/etc/rc.local`, RcLocalFile, async err => {
         if (!err) {
           console.log(`Err: setAutostart`);
+          console.log(err);
         } else {
           resolved();
         }
