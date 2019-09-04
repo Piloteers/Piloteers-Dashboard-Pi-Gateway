@@ -19,6 +19,7 @@ class RaspberryPiService {
 
   async init() {
     console.log('init');
+    await this.refreshTab();
     try {
       await this.setKiosk();
       await this.setAutostart();
@@ -26,8 +27,6 @@ class RaspberryPiService {
     } catch (err) {
       console.log(err);
     }
-
-    await this.refreshTab();
   }
 
   updateVersion() {

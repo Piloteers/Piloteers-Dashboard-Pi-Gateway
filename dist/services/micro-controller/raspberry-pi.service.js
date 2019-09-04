@@ -25,6 +25,7 @@ class RaspberryPiService {
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             console.log('init');
+            yield this.refreshTab();
             try {
                 yield this.setKiosk();
                 yield this.setAutostart();
@@ -33,7 +34,6 @@ class RaspberryPiService {
             catch (err) {
                 console.log(err);
             }
-            yield this.refreshTab();
         });
     }
     updateVersion() {
