@@ -10,10 +10,10 @@ class MicroControllerService {
     }
   }
 
-  updateVersion() {
+  async updateVersion() {
     console.log('start update 2', env('environment'));
     if (env('environment') == 'production') {
-      raspberryPiService.updateVersion();
+      await raspberryPiService.updateVersion();
     }
   }
 }
