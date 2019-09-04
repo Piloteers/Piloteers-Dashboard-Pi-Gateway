@@ -88,6 +88,7 @@ class RaspberryPiService {
             fs.writeFile(`/home/pi/.config/lxsession/LXDE-pi/autostart`, lxde_autostart_file_1.LxdeAutoStartFile, (err) => __awaiter(this, void 0, void 0, function* () {
                 if (!err) {
                     console.log(`Err: setKiosk`);
+                    console.log(err);
                 }
                 else {
                     resolved();
