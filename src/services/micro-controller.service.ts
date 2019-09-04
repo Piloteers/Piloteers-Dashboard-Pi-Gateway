@@ -1,14 +1,19 @@
 import { raspberryPiService } from './micro-controller/raspberry-pi.service';
+import { env } from '../env';
 
 class MicroControllerService {
   constructor() {}
 
   init() {
-    raspberryPiService.init();
+    if (env('environment') == 'production') {
+      raspberryPiService.init();
+    }
   }
 
   updateVersion() {
-    raspberryPiService.updateVersion();
+    if (env('environment') == 'production') {
+      raspberryPiService.updateVersion();
+    }
   }
 }
 

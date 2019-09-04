@@ -62,4 +62,20 @@ pi@raspberrypi:~ $ xdotool key "ctrl+F5"
 ```
 
 Get display resolution
-fbset -s
+`fbset -s`
+
+//cd /home/pi/apps/Piloteers-Dashboard-Pi-Gateway && sudo /usr/bin/npm run prod
+// /usr/bin/npm run prod --prefix /home/pi/apps/Piloteers-Dashboard-Pi-Gateway
+
+Remove startup message
+
+```
+sudo rm /etc/xdg/autostart/piwiz.desktop
+```
+
+Remove cursor
+I simply added a nocursor option as follows in the file (/etc/lightdm/lightdm.conf)
+
+```
+xserver-command = X -nocursor
+```

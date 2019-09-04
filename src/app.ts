@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as cookieParser from 'cookie-parser';
 import * as logger from 'morgan';
 import * as cors from 'cors';
-
+import { env } from './env';
 import * as indexRouter from './routes/index';
 import { SocketService } from './services/socket.service';
 import { microControllerService } from './services/micro-controller.service';
@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter.router);
 
 new SocketService(http);
-// microControllerService.init();
+microControllerService.init();
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -8,10 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const env_1 = require("../../env");
-const child_process_1 = require("child_process");
 const fs = require("fs");
 const { version } = require('../../../package.json');
+const lxde_autostart_file_1 = require("./files/lxde-autostart.file");
+const rc_local_file_1 = require("./files/rc-local.file");
+const lightdm_file_1 = require("./files/lightdm.file");
 class RaspberryPiService {
     constructor() {
         this.instance = null;
@@ -23,15 +24,16 @@ class RaspberryPiService {
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.refreshTab();
-                yield this.writeKiosk();
+                yield this.setKiosk();
+                yield this.setAutostart();
+                yield this.setScreenSettings();
             }
             catch (error) { }
         });
     }
     updateVersion() {
         return new Promise(resolved => {
-            const command = `sudo npm run update-device`;
+            const command = `sudo git reset --hard HEAD && sudo git pull && sudo pm2 restart all`;
             const { spawn } = require('child_process');
             const ls = spawn(command);
             ls.stdout.on('data', data => {
@@ -41,48 +43,82 @@ class RaspberryPiService {
                 console.error(`stderr: ${data}`);
             });
             ls.on('close', code => {
-                console.log(`child process exited with code ${code}`);
+                console.log(`updateVersion process exited with code ${code}`);
                 this.refreshTab();
+                resolved();
             });
         });
     }
     refreshTab() {
         return new Promise(resolved => {
-            const command = `DISPLAY=:0 xdotool key F5 && export DISPLAY=:0 && xset s off -dpms`;
-            child_process_1.exec(command, (err, stdout, stderr) => {
-                if (err) {
-                    console.log('err', JSON.stringify(err));
-                }
-                if (stdout) {
-                    console.log('stdout', stdout);
-                }
-                if (stderr) {
-                    console.log('stderr', stderr);
-                }
-                console.log(`Pi: Refresh tab`);
+            const command = `export DISPLAY=:0 && xdotool key "ctrl+F5" && xset s noblank && xset s off && xset -dpms`;
+            const { spawn } = require('child_process');
+            const ls = spawn(command);
+            ls.stdout.on('data', data => {
+                console.log(`stdout: ${data}`);
+            });
+            ls.stderr.on('data', data => {
+                console.error(`stderr: ${data}`);
+            });
+            ls.on('close', code => {
+                console.log(`refreshTab process exited with code ${code}`);
                 resolved();
             });
         });
     }
-    writeKiosk() {
+    cleanStartup() {
+        return new Promise(resolved => { });
+    }
+    removeCursor() {
         return new Promise(resolved => {
-            const file = `
-@lxpanel --profile LXDE-pi
-@pcmanfm --desktop --profile LXDE-pi
-#@xscreensaver -no-splash
-point-rpi
-
-@chromium-browser -start-maximized --kiosk --disable-infobars --app=http://127.0.0.1:${env_1.env('gatewayPort')}
-@unclutter
-@xset s off
-@xset s noblank
-@xset -dpms 
-      `;
-            fs.writeFile(`/home/pi/.config/lxsession/LXDE-pi/autostart`, file, (err) => __awaiter(this, void 0, void 0, function* () {
-                if (!err) {
-                    console.log(`Pi: kiosk chrome setup`);
-                }
+            const command = `sudo rm /etc/xdg/autostart/piwiz.desktop`;
+            const { spawn } = require('child_process');
+            const ls = spawn(command);
+            ls.stdout.on('data', data => {
+                console.log(`stdout: ${data}`);
+            });
+            ls.stderr.on('data', data => {
+                console.error(`stderr: ${data}`);
+            });
+            ls.on('close', code => {
+                console.log(`removeCursor process exited with code ${code}`);
                 resolved();
+            });
+        });
+    }
+    setKiosk() {
+        return new Promise(resolved => {
+            fs.writeFile(`/home/pi/.config/lxsession/LXDE-pi/autostart`, lxde_autostart_file_1.LxdeAutoStartFile, (err) => __awaiter(this, void 0, void 0, function* () {
+                if (!err) {
+                    console.log(`Err: setKiosk`);
+                }
+                else {
+                    resolved();
+                }
+            }));
+        });
+    }
+    setAutostart() {
+        return new Promise(resolved => {
+            fs.writeFile(`/etc/rc.local`, rc_local_file_1.RcLocalFile, (err) => __awaiter(this, void 0, void 0, function* () {
+                if (!err) {
+                    console.log(`Err: setAutostart`);
+                }
+                else {
+                    resolved();
+                }
+            }));
+        });
+    }
+    setScreenSettings() {
+        return new Promise(resolved => {
+            fs.writeFile(`/etc/lightdm/lightdm.conf`, lightdm_file_1.LightdmFile, (err) => __awaiter(this, void 0, void 0, function* () {
+                if (!err) {
+                    console.log(`Err: setScreenSettings`);
+                }
+                else {
+                    resolved();
+                }
             }));
         });
     }

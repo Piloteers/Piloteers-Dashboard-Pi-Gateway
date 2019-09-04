@@ -3,6 +3,9 @@ import { exec } from 'child_process';
 import * as fs from 'fs';
 const { version } = require('../../../package.json');
 import * as request from 'request-promise';
+import { LxdeAutoStartFile } from './files/lxde-autostart.file';
+import { RcLocalFile } from './files/rc-local.file';
+import { LightdmFile } from './files/lightdm.file';
 
 class RaspberryPiService {
   instance: any = null;
@@ -16,14 +19,15 @@ class RaspberryPiService {
 
   async init() {
     try {
-      await this.refreshTab();
-      await this.writeKiosk();
+      await this.setKiosk();
+      await this.setAutostart();
+      await this.setScreenSettings();
     } catch (error) {}
   }
 
   updateVersion() {
     return new Promise(resolved => {
-      const command = `sudo npm run update-device`;
+      const command = `sudo git reset --hard HEAD && sudo git pull && sudo pm2 restart all`;
 
       const { spawn } = require('child_process');
       const ls = spawn(command);
@@ -37,51 +41,93 @@ class RaspberryPiService {
       });
 
       ls.on('close', code => {
-        console.log(`child process exited with code ${code}`);
+        console.log(`updateVersion process exited with code ${code}`);
         this.refreshTab();
+        resolved();
       });
     });
   }
 
   refreshTab() {
     return new Promise(resolved => {
-      const command = `DISPLAY=:0 xdotool key F5 && export DISPLAY=:0 && xset s off -dpms`;
+      const command = `export DISPLAY=:0 && xdotool key "ctrl+F5" && xset s noblank && xset s off && xset -dpms`;
 
-      exec(command, (err, stdout, stderr) => {
-        if (err) {
-          console.log('err', JSON.stringify(err));
-        }
-        if (stdout) {
-          console.log('stdout', stdout);
-        }
-        if (stderr) {
-          console.log('stderr', stderr);
-        }
-        console.log(`Pi: Refresh tab`);
+      const { spawn } = require('child_process');
+      const ls = spawn(command);
+
+      ls.stdout.on('data', data => {
+        console.log(`stdout: ${data}`);
+      });
+
+      ls.stderr.on('data', data => {
+        console.error(`stderr: ${data}`);
+      });
+
+      ls.on('close', code => {
+        console.log(`refreshTab process exited with code ${code}`);
         resolved();
       });
     });
   }
 
-  writeKiosk() {
-    return new Promise(resolved => {
-      const file = `
-@lxpanel --profile LXDE-pi
-@pcmanfm --desktop --profile LXDE-pi
-#@xscreensaver -no-splash
-point-rpi
+  cleanStartup() {
+    return new Promise(resolved => {});
+  }
 
-@chromium-browser -start-maximized --kiosk --disable-infobars --app=http://127.0.0.1:${env('gatewayPort')}
-@unclutter
-@xset s off
-@xset s noblank
-@xset -dpms 
-      `;
-      fs.writeFile(`/home/pi/.config/lxsession/LXDE-pi/autostart`, file, async err => {
-        if (!err) {
-          console.log(`Pi: kiosk chrome setup`);
-        }
+  removeCursor() {
+    return new Promise(resolved => {
+      const command = `sudo rm /etc/xdg/autostart/piwiz.desktop`;
+
+      const { spawn } = require('child_process');
+      const ls = spawn(command);
+
+      ls.stdout.on('data', data => {
+        console.log(`stdout: ${data}`);
+      });
+
+      ls.stderr.on('data', data => {
+        console.error(`stderr: ${data}`);
+      });
+
+      ls.on('close', code => {
+        console.log(`removeCursor process exited with code ${code}`);
         resolved();
+      });
+    });
+  }
+
+  setKiosk() {
+    return new Promise(resolved => {
+      fs.writeFile(`/home/pi/.config/lxsession/LXDE-pi/autostart`, LxdeAutoStartFile, async err => {
+        if (!err) {
+          console.log(`Err: setKiosk`);
+        } else {
+          resolved();
+        }
+      });
+    });
+  }
+
+  setAutostart() {
+    return new Promise(resolved => {
+      fs.writeFile(`/etc/rc.local`, RcLocalFile, async err => {
+        if (!err) {
+          console.log(`Err: setAutostart`);
+        } else {
+          resolved();
+        }
+      });
+    });
+  }
+
+  setScreenSettings() {
+    return new Promise(resolved => {
+      fs.writeFile(`/etc/lightdm/lightdm.conf`, LightdmFile, async err => {
+        if (!err) {
+          console.log(`Err: setScreenSettings`);
+        } else {
+          resolved();
+        }
       });
     });
   }
