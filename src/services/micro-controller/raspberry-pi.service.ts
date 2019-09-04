@@ -38,8 +38,6 @@ class RaspberryPiService {
           console.error(`exec error: ${error}`);
           return;
         }
-        console.log(`stdout: ${stdout}`);
-        console.error(`stderr: ${stderr}`);
         resolved();
       });
     });
@@ -54,8 +52,6 @@ class RaspberryPiService {
           console.error(`exec error: ${error}`);
           return;
         }
-        console.log(`stdout: ${stdout}`);
-        console.error(`stderr: ${stderr}`);
         resolved();
       });
     });
@@ -76,8 +72,6 @@ class RaspberryPiService {
           console.error(`exec error: ${error}`);
           return;
         }
-        console.log(`stdout: ${stdout}`);
-        console.error(`stderr: ${stderr}`);
         resolved();
       });
     });
@@ -102,7 +96,6 @@ class RaspberryPiService {
       fs.writeFile(`/etc/rc.local`, RcLocalFile, async err => {
         if (err) {
           console.log(`Err: setAutostart`, err);
-          console.log(err);
         } else {
           resolved();
         }
