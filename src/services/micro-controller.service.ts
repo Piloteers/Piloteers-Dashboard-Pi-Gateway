@@ -11,7 +11,6 @@ class MicroControllerService {
   }
 
   async updateVersion() {
-    console.log('start update 2', env('environment'));
     if (env('environment') == 'production') {
       await raspberryPiService.updateVersion();
     }

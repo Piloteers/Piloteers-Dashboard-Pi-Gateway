@@ -19,7 +19,6 @@ class MicroControllerService {
     }
     updateVersion() {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('start update 2', env_1.env('environment'));
             if (env_1.env('environment') == 'production') {
                 yield raspberry_pi_service_1.raspberryPiService.updateVersion();
             }
