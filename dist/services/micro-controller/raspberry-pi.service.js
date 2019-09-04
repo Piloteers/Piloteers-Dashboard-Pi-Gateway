@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const child_process_1 = require("child_process");
 const fs = require("fs");
 const { version } = require('../../../package.json');
 const lxde_autostart_file_1 = require("./files/lxde-autostart.file");
@@ -34,16 +35,13 @@ class RaspberryPiService {
     updateVersion() {
         return new Promise(resolved => {
             const command = `sudo git reset --hard HEAD && sudo git pull && sudo pm2 restart all`;
-            const { spawn } = require('child_process');
-            const ls = spawn(command);
-            ls.stdout.on('data', data => {
-                console.log(`stdout: ${data}`);
-            });
-            ls.stderr.on('data', data => {
-                console.error(`stderr: ${data}`);
-            });
-            ls.on('close', code => {
-                console.log(`updateVersion process exited with code ${code}`);
+            child_process_1.exec(command, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`exec error: ${error}`);
+                    return;
+                }
+                console.log(`stdout: ${stdout}`);
+                console.error(`stderr: ${stderr}`);
                 this.refreshTab();
                 resolved();
             });
@@ -52,16 +50,13 @@ class RaspberryPiService {
     refreshTab() {
         return new Promise(resolved => {
             const command = `export DISPLAY=:0 && xdotool key "ctrl+F5" && xset s noblank && xset s off && xset -dpms`;
-            const { spawn } = require('child_process');
-            const ls = spawn(command);
-            ls.stdout.on('data', data => {
-                console.log(`stdout: ${data}`);
-            });
-            ls.stderr.on('data', data => {
-                console.error(`stderr: ${data}`);
-            });
-            ls.on('close', code => {
-                console.log(`refreshTab process exited with code ${code}`);
+            child_process_1.exec(command, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`exec error: ${error}`);
+                    return;
+                }
+                console.log(`stdout: ${stdout}`);
+                console.error(`stderr: ${stderr}`);
                 resolved();
             });
         });
@@ -72,16 +67,13 @@ class RaspberryPiService {
     removeCursor() {
         return new Promise(resolved => {
             const command = `sudo rm /etc/xdg/autostart/piwiz.desktop`;
-            const { spawn } = require('child_process');
-            const ls = spawn(command);
-            ls.stdout.on('data', data => {
-                console.log(`stdout: ${data}`);
-            });
-            ls.stderr.on('data', data => {
-                console.error(`stderr: ${data}`);
-            });
-            ls.on('close', code => {
-                console.log(`removeCursor process exited with code ${code}`);
+            child_process_1.exec(command, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`exec error: ${error}`);
+                    return;
+                }
+                console.log(`stdout: ${stdout}`);
+                console.error(`stderr: ${stderr}`);
                 resolved();
             });
         });
