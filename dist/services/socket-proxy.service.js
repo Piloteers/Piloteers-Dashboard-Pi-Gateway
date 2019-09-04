@@ -22,6 +22,7 @@ class SocketProxyService {
             this.proxyClient = io(env_1.env('backendSocketUrl'), {
                 query: `deviceId=${socket.handshake.query.deviceId}&role=${socket.handshake.query.role}`
             });
+            new command_socket_1.CommandSocket(this.socket, this.proxyClient);
             patch(this.proxyClient);
             this.createClientProxy();
         }
@@ -31,7 +32,6 @@ class SocketProxyService {
         }));
     }
     createClientProxy() {
-        new command_socket_1.CommandSocket(this.socket, this.proxyClient);
         this.proxyClient.on('*', data => {
             if (typeof data.data[0] === 'string') {
                 if (data.data[0].startsWith('SG_')) {
