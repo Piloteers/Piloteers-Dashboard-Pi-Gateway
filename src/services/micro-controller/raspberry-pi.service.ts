@@ -27,6 +27,7 @@ class RaspberryPiService {
   }
 
   updateVersion() {
+    console.log('start update');
     return new Promise(resolved => {
       const command = `sudo git reset --hard HEAD && sudo git pull && sudo npm i && sudo pm2 restart all`;
 

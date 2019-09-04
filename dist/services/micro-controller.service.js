@@ -10,6 +10,7 @@ class MicroControllerService {
         }
     }
     updateVersion() {
+        console.log('start update 2', env_1.env('environment'));
         if (env_1.env('environment') == 'production') {
             raspberry_pi_service_1.raspberryPiService.updateVersion();
         }
