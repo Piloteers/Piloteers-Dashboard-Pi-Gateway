@@ -24,6 +24,7 @@ class RaspberryPiService {
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log('init');
             try {
                 yield this.setKiosk();
                 yield this.setAutostart();

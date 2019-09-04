@@ -18,6 +18,7 @@ class RaspberryPiService {
   }
 
   async init() {
+    console.log('init');
     try {
       await this.setKiosk();
       await this.setAutostart();
