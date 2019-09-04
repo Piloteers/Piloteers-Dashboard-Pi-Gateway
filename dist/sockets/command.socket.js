@@ -7,7 +7,7 @@ class CommandSocket {
         this.socket = socket;
     }
     on(route, data) {
-        console.log('Server Command: ', route);
+        console.log('Server Command: ', route, dashboard_model_1.RoutesEnum.SG_COMMAND_UPDATE_VERSION);
         switch (route) {
             case dashboard_model_1.RoutesEnum.SG_COMMAND_UPDATE_VERSION:
                 console.log('update version');
