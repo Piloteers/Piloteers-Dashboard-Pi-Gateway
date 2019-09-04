@@ -1,6 +1,6 @@
 {
   "name": "piloteers-dashboard-pi-gateway",
-  "version": "0.0.56",
+  "version": "0.0.57",
   "private": true,
   "scripts": {
     "start": "nodemon",
