@@ -22,7 +22,9 @@ class RaspberryPiService {
       await this.setKiosk();
       await this.setAutostart();
       await this.setScreenSettings();
-    } catch (error) {}
+    } catch (err) {
+      console.log(err);
+    }
 
     await this.refreshTab();
   }

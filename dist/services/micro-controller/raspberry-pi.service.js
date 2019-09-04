@@ -29,7 +29,9 @@ class RaspberryPiService {
                 yield this.setAutostart();
                 yield this.setScreenSettings();
             }
-            catch (error) { }
+            catch (err) {
+                console.log(err);
+            }
             yield this.refreshTab();
         });
     }
