@@ -4,9 +4,9 @@ import { microControllerService } from '../services/micro-controller.service';
 
 export class CommandSocket {
   constructor(socket, io) {
-    io.on(RoutesEnum.SG_UPDATE_VERSION, () => {
+    io.on(RoutesEnum.SG_COMMAND_UPDATE_VERSION, () => {
       console.log('update version');
-      socket.emit(RoutesEnum.GD_UPDATE_VERSION);
+      socket.emit(RoutesEnum.GD_COMMAND_UPDATE_VERSION);
       microControllerService.updateVersion();
     });
   }
