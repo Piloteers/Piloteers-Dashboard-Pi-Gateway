@@ -49,7 +49,7 @@ class RaspberryPiService {
   refreshTab() {
     console.log('Refresh tab');
     return new Promise(resolved => {
-      const command = `export DISPLAY=:0 && xdotool key "ctrl+F5" && xset s noblank && xset s off && xset -dpms`;
+      const command = `export DISPLAY=:0 && export XAUTHORITY=/home/pi/.Xauthority && xdotool key "ctrl+F5" && xset s noblank && xset s off && xset -dpms`;
       exec(command, (error, stdout, stderr) => {
         if (error) {
           console.error(`exec error: ${error}`);
