@@ -11,7 +11,7 @@ var http = require('http');
 /**
  * Get port from environment and store in Express.
  */
-var port = normalizePort(process.env.PORT || env_1.env('gatewayPort'));
+var port = normalizePort(env_1.env('gatewayPort') || process.env.PORT);
 app.set('port', port);
 console.log(`Gateway listening on *:${env_1.env('gatewayPort')}`);
 /**
