@@ -28,6 +28,7 @@ class RaspberryPiService {
                 yield this.setKiosk();
                 yield this.setAutostart();
                 yield this.setScreenSettings();
+                this.refreshTab();
             }
             catch (error) { }
         });
@@ -42,7 +43,6 @@ class RaspberryPiService {
                 }
                 console.log(`stdout: ${stdout}`);
                 console.error(`stderr: ${stderr}`);
-                this.refreshTab();
                 resolved();
             });
         });

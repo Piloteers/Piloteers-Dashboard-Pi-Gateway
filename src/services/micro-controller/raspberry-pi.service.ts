@@ -22,6 +22,7 @@ class RaspberryPiService {
       await this.setKiosk();
       await this.setAutostart();
       await this.setScreenSettings();
+      this.refreshTab();
     } catch (error) {}
   }
 
@@ -36,7 +37,6 @@ class RaspberryPiService {
         }
         console.log(`stdout: ${stdout}`);
         console.error(`stderr: ${stderr}`);
-        this.refreshTab();
         resolved();
       });
     });

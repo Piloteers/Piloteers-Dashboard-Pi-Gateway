@@ -29,10 +29,6 @@ export class SocketProxyService {
   }
 
   createClientProxy() {
-    this.proxyClient.on(RoutesEnum.SG_COMMAND_UPDATE_VERSION, data => {
-      console.log('geht doch');
-    });
-
     this.proxyClient.on('*', data => {
       if (typeof data.data[0] === 'string') {
         if (data.data[0].startsWith('SG_')) {
