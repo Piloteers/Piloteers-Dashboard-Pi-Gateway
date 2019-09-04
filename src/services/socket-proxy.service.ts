@@ -2,6 +2,7 @@ import { env } from '../env';
 import * as io from 'socket.io-client';
 import * as wildcard from 'socketio-wildcard';
 import { CommandSocket } from '../sockets/command.socket';
+import { RoutesEnum } from '@piloteers/dashboard-model';
 let patch = wildcard(io.Manager);
 
 export class SocketProxyService {
@@ -27,6 +28,10 @@ export class SocketProxyService {
   }
 
   createClientProxy() {
+    this.proxyClient.on(RoutesEnum.SG_COMMAND_UPDATE_VERSION, data => {
+      console.log('geht doch');
+    });
+
     this.proxyClient.on('*', data => {
       if (typeof data.data[0] === 'string') {
         if (data.data[0].startsWith('SG_')) {

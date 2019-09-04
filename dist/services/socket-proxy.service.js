@@ -12,6 +12,7 @@ const env_1 = require("../env");
 const io = require("socket.io-client");
 const wildcard = require("socketio-wildcard");
 const command_socket_1 = require("../sockets/command.socket");
+const dashboard_model_1 = require("@piloteers/dashboard-model");
 let patch = wildcard(io.Manager);
 class SocketProxyService {
     constructor(socket) {
@@ -32,6 +33,9 @@ class SocketProxyService {
         }));
     }
     createClientProxy() {
+        this.proxyClient.on(dashboard_model_1.RoutesEnum.SG_COMMAND_UPDATE_VERSION, data => {
+            console.log('geht doch');
+        });
         this.proxyClient.on('*', data => {
             if (typeof data.data[0] === 'string') {
                 if (data.data[0].startsWith('SG_')) {
