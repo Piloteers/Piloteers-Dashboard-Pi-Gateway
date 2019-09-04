@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'dashboard-gateway',
       script: './dist/bin/www.js',
-      watch: true,
+      watch: false,
       env: {
         PORT: 3000,
         NODE_ENV: 'development'
