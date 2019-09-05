@@ -8,6 +8,8 @@ sudo apt-get install xdotool
 DISPLAY=:0 xdotool key F5
 ```
 
+
+
 ```
 chromium-browser -start-maximized --kiosk --disable-infobars --app=http://127.0.0.1:${env.serverPort}
 ```
@@ -78,4 +80,10 @@ I simply added a nocursor option as follows in the file (/etc/lightdm/lightdm.co
 
 ```
 xserver-command = X -nocursor
+```
+
+Auto start pm2
+
+```
+sudo pm2 startup systemd
 ```
