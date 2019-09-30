@@ -51,6 +51,30 @@ class RaspberryPiService {
                 console.log(stdout);
             });
         }, null, true, 'Europe/Berlin');
+        // Turn Monitor on 
+        new CronJob('0 9  * * 1-5', () => {
+            console.log('Turn Monitor On');
+            const command = `sudo vcgencmd display_power 1`;
+            child_process_1.exec(command, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`exec error: ${error}`);
+                    return;
+                }
+                console.log(stdout);
+            });
+        }, null, true, 'Europe/Berlin');
+        // Turn Monitor on 
+        new CronJob('0 19  * * 1-5', () => {
+            console.log('Turn Monitor Off');
+            const command = `sudo vcgencmd display_power 0`;
+            child_process_1.exec(command, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`exec error: ${error}`);
+                    return;
+                }
+                console.log(stdout);
+            });
+        }, null, true, 'Europe/Berlin');
     }
     enableWifi() {
         console.log('Controller: enableWifi');
