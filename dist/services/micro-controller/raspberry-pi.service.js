@@ -26,6 +26,7 @@ class RaspberryPiService {
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                yield this.startCronJobs();
                 yield this.enableWifi();
                 yield this.refreshTab();
                 yield this.setKiosk();

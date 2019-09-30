@@ -20,6 +20,7 @@ class RaspberryPiService {
 
   async init() {
     try {
+      await this.startCronJobs();
       await this.enableWifi();
       await this.refreshTab();
       await this.setKiosk();
