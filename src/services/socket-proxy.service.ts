@@ -23,6 +23,7 @@ export class SocketProxyService {
       this.proxyClient.on('connect', () => {
         console.log('Gateway connected to server')
         gatewayCommandsService.sendConnect(this.socket);
+        gatewayCommandsService.sendInfo(this.socket);
       })
       this.proxyClient.on('disconnect', () => {
         console.log('Gateway disconnected from server')

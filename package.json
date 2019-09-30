@@ -15,7 +15,7 @@
     "update-device": "sudo npm run git && sudo pm2 restart all"
   },
   "dependencies": {
-    "@piloteers/dashboard-model": "^1.0.142",
+    "@piloteers/dashboard-model": "^1.0.144",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
     "debug": "~4.1.1",
@@ -23,6 +23,7 @@
     "express": "~4.16.0",
     "express-ws": "^4.0.0",
     "http-errors": "~1.7.2",
+    "ip": "^1.1.5",
     "jsonwebtoken": "^8.5.1",
     "jwk-to-pem": "^2.0.1",
     "morgan": "~1.9.0",
