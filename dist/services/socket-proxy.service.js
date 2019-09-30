@@ -12,6 +12,7 @@ const env_1 = require("../env");
 const io = require("socket.io-client");
 const wildcard = require("socketio-wildcard");
 const command_socket_1 = require("../sockets/command.socket");
+const gateway_commands_service_1 = require("./gateway-commands.service");
 let patch = wildcard(io.Manager);
 class SocketProxyService {
     constructor(socket) {
@@ -23,6 +24,14 @@ class SocketProxyService {
                 query: `deviceId=${socket.handshake.query.deviceId}&role=${socket.handshake.query.role}`
             });
             new command_socket_1.CommandSocket(this.socket, this.proxyClient);
+            this.proxyClient.on('connect', () => {
+                console.log('Gateway connected to server');
+                gateway_commands_service_1.gatewayCommandsService.sendConnect(this.socket);
+            });
+            this.proxyClient.on('disconnect', () => {
+                console.log('Gateway disconnected from server');
+                gateway_commands_service_1.gatewayCommandsService.sendDisconnect(this.socket);
+            });
             patch(this.proxyClient);
             this.createClientProxy();
         }

@@ -3,6 +3,7 @@ import * as io from 'socket.io-client';
 import * as wildcard from 'socketio-wildcard';
 import { CommandSocket } from '../sockets/command.socket';
 import { RoutesEnum } from '@piloteers/dashboard-model';
+import { gatewayCommandsService } from './gateway-commands.service';
 let patch = wildcard(io.Manager);
 
 export class SocketProxyService {
@@ -18,6 +19,16 @@ export class SocketProxyService {
       });
 
       new CommandSocket(this.socket, this.proxyClient);
+
+      this.proxyClient.on('connect', () => {
+        console.log('Gateway connected to server')
+        gatewayCommandsService.sendConnect(this.socket);
+      })
+      this.proxyClient.on('disconnect', () => {
+        console.log('Gateway disconnected from server')
+        gatewayCommandsService.sendDisconnect(this.socket);
+      })
+
       patch(this.proxyClient);
       this.createClientProxy();
     }

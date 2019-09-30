@@ -87,3 +87,25 @@ Auto start pm2
 ```
 sudo pm2 startup systemd
 ```
+
+
+
+
+Auto reconnect wifi
+
+maybe not needed
+```
+sudo apt-get install ifplugd
+```
+
+```  
+Zuerst benennen wir die Datei "ifupdown" um:
+
+sudo mv /etc/ifplugd/action.d/ifupdown /etc/ifplugd/action.d/ifupdown.alt
+Anschließend kopieren wir die Datei, in der der Befehl für den WLAN-Reconnect steht an die Stelle der Datei "ifupdown".
+
+sudo cp /etc/wpa_supplicant/ifupdown.sh /etc/ifplugd/action.d/ifupdown
+Nach einem Neustart sollte der WLAN-Reconnect automatisch erfolgen.
+
+sudo reboot 
+```

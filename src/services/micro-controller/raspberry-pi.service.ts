@@ -28,6 +28,23 @@ class RaspberryPiService {
     }
   }
 
+  getSsid() {
+
+    console.log('Controller: getSsid');
+    return new Promise(resolved => {
+      const command = `sudo iwgetid`;
+
+      exec(command, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error: ${error}`);
+          return;
+        }
+        console.log(stdout)
+        resolved(stdout);
+      });
+    });
+  }
+
   updateVersion() {
     console.log('Controller: updateVersion');
     return new Promise(resolved => {
@@ -59,7 +76,7 @@ class RaspberryPiService {
 
   cleanStartup() {
     console.log('Controller: cleanStartup');
-    return new Promise(resolved => {});
+    return new Promise(resolved => { });
   }
 
   removeCursor() {

@@ -35,6 +35,20 @@ class RaspberryPiService {
             }
         });
     }
+    getSsid() {
+        console.log('Controller: getSsid');
+        return new Promise(resolved => {
+            const command = `sudo iwgetid`;
+            child_process_1.exec(command, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`exec error: ${error}`);
+                    return;
+                }
+                console.log(stdout);
+                resolved(stdout);
+            });
+        });
+    }
     updateVersion() {
         console.log('Controller: updateVersion');
         return new Promise(resolved => {
