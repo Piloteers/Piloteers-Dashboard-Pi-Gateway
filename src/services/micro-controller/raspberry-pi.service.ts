@@ -2,7 +2,6 @@ import { env } from '../../env';
 import { exec } from 'child_process';
 import * as fs from 'fs';
 const { version } = require('../../../package.json');
-import * as request from 'request-promise';
 import { LxdeAutoStartFile } from './files/lxde-autostart.file';
 import { RcLocalFile } from './files/rc-local.file';
 import { LightdmFile } from './files/lightdm.file';
@@ -35,8 +34,8 @@ class RaspberryPiService {
   startCronJobs() {
 
     // Reconnect to wifi
-    new CronJob('*/10 * * * * *', () => {
-      console.log('You will see this message 10 second');
+    new CronJob('0 */1 * * * *', () => {
+      console.log('Checking Wifi Connection');
       // weard bug in firmware: https://raspberrypi.stackexchange.com/questions/43720/disable-wifi-wlan0-on-pi-3
       const command = `sudo iwgetid`;
       exec(command, (error, stdout, stderr) => {
@@ -44,13 +43,16 @@ class RaspberryPiService {
           console.error(`exec error: ${error}`);
           return;
         }
-        console.log(extractFirstQuotedText(stdout))
+        const ssid = extractFirstQuotedText(stdout)
+        if (!ssid) {
+          this.reconnectWifi();
+        }
       });
     }, null, true, 'Europe/Berlin');
 
     // Turn Monitor on 
     new CronJob('0 9  * * 1-5', () => {
-      console.log('Turn Monitor On');
+      console.log('Turn Monitor On', new Date());
       const command = `sudo vcgencmd display_power 1`;
       exec(command, (error, stdout, stderr) => {
         if (error) {
@@ -63,7 +65,7 @@ class RaspberryPiService {
 
     // Turn Monitor on 
     new CronJob('0 19  * * 1-5', () => {
-      console.log('Turn Monitor Off');
+      console.log('Turn Monitor Off', new Date());
       const command = `sudo vcgencmd display_power 0`;
       exec(command, (error, stdout, stderr) => {
         if (error) {
@@ -72,6 +74,17 @@ class RaspberryPiService {
         }
       });
     }, null, true, 'Europe/Berlin');
+  }
+
+  reconnectWifi() {
+    const command = `sudo wpa_cli -i wlan0 reconfigure`;
+
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        return;
+      }
+    });
   }
 
   enableWifi() {
