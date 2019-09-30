@@ -35,7 +35,6 @@ class RaspberryPiService {
 
     // Reconnect to wifi
     new CronJob('0 */1 * * * *', () => {
-      console.log('Checking Wifi Connection');
       // weard bug in firmware: https://raspberrypi.stackexchange.com/questions/43720/disable-wifi-wlan0-on-pi-3
       const command = `sudo iwgetid`;
       exec(command, (error, stdout, stderr) => {
@@ -44,7 +43,11 @@ class RaspberryPiService {
           return;
         }
         const ssid = extractFirstQuotedText(stdout)
+        if (ssid != 'Piloteers') {
+          console.log(ssid)
+        }
         if (!ssid) {
+          console.log('Wifi disconnected', new Date());
           this.reconnectWifi();
         }
       });
