@@ -21,7 +21,7 @@ if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
 
-cd /home/pi/apps/Piloteers-Dashboard-Pi-Gateway && sudo /usr/bin/npm run prod
+# cd /home/pi/apps/Piloteers-Dashboard-Pi-Gateway && sudo /usr/bin/npm run prod
 
 exit 0
 `;

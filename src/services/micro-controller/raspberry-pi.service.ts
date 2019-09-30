@@ -6,6 +6,7 @@ import * as request from 'request-promise';
 import { LxdeAutoStartFile } from './files/lxde-autostart.file';
 import { RcLocalFile } from './files/rc-local.file';
 import { LightdmFile } from './files/lightdm.file';
+import { extractFirstQuotedText } from '../../helpers';
 var CronJob = require('cron').CronJob;
 
 class RaspberryPiService {
@@ -70,7 +71,7 @@ class RaspberryPiService {
           console.error(`exec error: ${error}`);
           return;
         }
-        console.log(stdout)
+        console.log(extractFirstQuotedText(stdout))
       });
     }, null, true, 'Europe/Berlin');
   }
@@ -159,6 +160,7 @@ class RaspberryPiService {
         if (err) {
           console.log(`Err: setAutostart`, err);
         } else {
+          this.makeFileExecutable('/etc/rc.local')
           resolved();
         }
       });
@@ -175,6 +177,18 @@ class RaspberryPiService {
           resolved();
         }
       });
+    });
+  }
+
+  makeFileExecutable(file) {
+    const command = `sudo chmod +x ${file}`;
+
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        return;
+      }
+      console.log(`File ${file} is now executable`)
     });
   }
 }

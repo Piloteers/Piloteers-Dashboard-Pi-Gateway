@@ -14,6 +14,7 @@ const { version } = require('../../../package.json');
 const lxde_autostart_file_1 = require("./files/lxde-autostart.file");
 const rc_local_file_1 = require("./files/rc-local.file");
 const lightdm_file_1 = require("./files/lightdm.file");
+const helpers_1 = require("../../helpers");
 var CronJob = require('cron').CronJob;
 class RaspberryPiService {
     constructor() {
@@ -73,7 +74,7 @@ class RaspberryPiService {
                     console.error(`exec error: ${error}`);
                     return;
                 }
-                console.log(stdout);
+                console.log(helpers_1.extractFirstQuotedText(stdout));
             });
         }, null, true, 'Europe/Berlin');
     }
@@ -155,6 +156,7 @@ class RaspberryPiService {
                     console.log(`Err: setAutostart`, err);
                 }
                 else {
+                    this.makeFileExecutable('/etc/rc.local');
                     resolved();
                 }
             }));
@@ -171,6 +173,16 @@ class RaspberryPiService {
                     resolved();
                 }
             }));
+        });
+    }
+    makeFileExecutable(file) {
+        const command = `sudo chmod +x ${file}`;
+        child_process_1.exec(command, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            console.log(`File ${file} is now executable`);
         });
     }
 }
