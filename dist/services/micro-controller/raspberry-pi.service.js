@@ -50,7 +50,7 @@ class RaspberryPiService {
                     console.error(`exec error: ${error}`);
                     return;
                 }
-                console.log(stdout);
+                console.log(helpers_1.extractFirstQuotedText(stdout));
             });
         }, null, true, 'Europe/Berlin');
         // Turn Monitor on 
@@ -62,7 +62,6 @@ class RaspberryPiService {
                     console.error(`exec error: ${error}`);
                     return;
                 }
-                console.log(stdout);
             });
         }, null, true, 'Europe/Berlin');
         // Turn Monitor on 
@@ -74,7 +73,6 @@ class RaspberryPiService {
                     console.error(`exec error: ${error}`);
                     return;
                 }
-                console.log(helpers_1.extractFirstQuotedText(stdout));
             });
         }, null, true, 'Europe/Berlin');
     }

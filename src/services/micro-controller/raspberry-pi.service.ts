@@ -44,7 +44,7 @@ class RaspberryPiService {
           console.error(`exec error: ${error}`);
           return;
         }
-        console.log(stdout)
+        console.log(extractFirstQuotedText(stdout))
       });
     }, null, true, 'Europe/Berlin');
 
@@ -57,7 +57,6 @@ class RaspberryPiService {
           console.error(`exec error: ${error}`);
           return;
         }
-        console.log(stdout)
       });
     }, null, true, 'Europe/Berlin');
 
@@ -71,7 +70,6 @@ class RaspberryPiService {
           console.error(`exec error: ${error}`);
           return;
         }
-        console.log(extractFirstQuotedText(stdout))
       });
     }, null, true, 'Europe/Berlin');
   }
