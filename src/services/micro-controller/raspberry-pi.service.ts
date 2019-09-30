@@ -19,6 +19,7 @@ class RaspberryPiService {
 
   async init() {
     try {
+      await this.enableWifi();
       await this.refreshTab();
       await this.setKiosk();
       await this.setAutostart();
@@ -28,21 +29,22 @@ class RaspberryPiService {
     }
   }
 
-  getSsid() {
-
-    console.log('Controller: getSsid');
+  enableWifi() {
+    console.log('Controller: enableWifi');
     return new Promise(resolved => {
-      const command = `sudo iwgetid`;
-
+      const command = `sudo iwconfig wlan0 txpower on`;
       exec(command, (error, stdout, stderr) => {
         if (error) {
           console.error(`exec error: ${error}`);
           return;
         }
-        console.log(stdout)
-        resolved(stdout);
+        resolved();
       });
     });
+  }
+
+  getSsid() {
+
   }
 
   updateVersion() {

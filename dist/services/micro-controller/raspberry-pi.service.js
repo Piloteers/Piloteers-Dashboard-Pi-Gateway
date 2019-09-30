@@ -25,6 +25,7 @@ class RaspberryPiService {
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                yield this.enableWifi();
                 yield this.refreshTab();
                 yield this.setKiosk();
                 yield this.setAutostart();
@@ -35,19 +36,20 @@ class RaspberryPiService {
             }
         });
     }
-    getSsid() {
-        console.log('Controller: getSsid');
+    enableWifi() {
+        console.log('Controller: enableWifi');
         return new Promise(resolved => {
-            const command = `sudo iwgetid`;
+            const command = `sudo iwconfig wlan0 txpower on`;
             child_process_1.exec(command, (error, stdout, stderr) => {
                 if (error) {
                     console.error(`exec error: ${error}`);
                     return;
                 }
-                console.log(stdout);
-                resolved(stdout);
+                resolved();
             });
         });
+    }
+    getSsid() {
     }
     updateVersion() {
         console.log('Controller: updateVersion');
