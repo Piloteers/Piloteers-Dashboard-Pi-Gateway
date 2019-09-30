@@ -63,7 +63,7 @@ class RaspberryPiService {
             });
         }, null, true, 'Europe/Berlin');
         // Check active screen time  
-        new CronJob('0 */1 * * * *', () => {
+        new CronJob('*/10 * * * * *', () => {
             console.log('Monitor check', new Date('2019-09-30T17:19:54.003Z'));
             const date = new Date();
             if (device_service_1.deviceService.data.device.isConnected) {

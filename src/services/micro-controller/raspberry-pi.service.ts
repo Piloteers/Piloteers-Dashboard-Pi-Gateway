@@ -58,11 +58,11 @@ class RaspberryPiService {
 
 
     // Check active screen time  
-    new CronJob('0 */1 * * * *', () => {
+    new CronJob('*/10 * * * * *', () => {
       console.log('Monitor check', new Date('2019-09-30T17:19:54.003Z'));
       const date = new Date();
       if (deviceService.data.device.isConnected) {
-        const activeScreenTime = deviceService.data.device.deviceSettings.activeScreenTime
+        const activeScreenTime = deviceService.data.device.deviceSettings.activeScreenTime;
         const quarter = Math.floor(parseInt(format(date, 'mm')) / 15);
         const time = format(date.setMinutes(quarter * 15), 'HH:mm');
         const day = moment().format('ddd').toUpperCase();
