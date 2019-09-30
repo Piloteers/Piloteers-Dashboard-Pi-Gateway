@@ -14,6 +14,7 @@ const { version } = require('../../../package.json');
 const lxde_autostart_file_1 = require("./files/lxde-autostart.file");
 const rc_local_file_1 = require("./files/rc-local.file");
 const lightdm_file_1 = require("./files/lightdm.file");
+var CronJob = require('cron').CronJob;
 class RaspberryPiService {
     constructor() {
         this.instance = null;
@@ -36,10 +37,26 @@ class RaspberryPiService {
             }
         });
     }
+    startCronJobs() {
+        // Reconnect to wifi
+        new CronJob('*/10 * * * * *', () => {
+            console.log('You will see this message 10 second');
+            // weard bug in firmware: https://raspberrypi.stackexchange.com/questions/43720/disable-wifi-wlan0-on-pi-3
+            const command = `sudo iwgetid`;
+            child_process_1.exec(command, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`exec error: ${error}`);
+                    return;
+                }
+                console.log(stdout);
+            });
+        }, null, true, 'Europe/Berlin');
+    }
     enableWifi() {
         console.log('Controller: enableWifi');
         return new Promise(resolved => {
-            const command = `sudo iwconfig wlan0 txpower on`;
+            // weard bug in firmware: https://raspberrypi.stackexchange.com/questions/43720/disable-wifi-wlan0-on-pi-3
+            const command = `sudo iwconfig wlan0 txpower auto && sudo iwconfig wlan0 txpower auto && sudo iwconfig wlan0 txpower on && sudo iw wlan0 set power_save off`;
             child_process_1.exec(command, (error, stdout, stderr) => {
                 if (error) {
                     console.error(`exec error: ${error}`);
@@ -48,8 +65,6 @@ class RaspberryPiService {
                 resolved();
             });
         });
-    }
-    getSsid() {
     }
     updateVersion() {
         console.log('Controller: updateVersion');

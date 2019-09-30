@@ -2,7 +2,7 @@ import { raspberryPiService } from './micro-controller/raspberry-pi.service';
 import { env } from '../env';
 
 class MicroControllerService {
-  constructor() {}
+  constructor() { }
 
   init() {
     if (env('environment') == 'production') {

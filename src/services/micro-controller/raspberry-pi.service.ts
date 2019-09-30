@@ -6,6 +6,7 @@ import * as request from 'request-promise';
 import { LxdeAutoStartFile } from './files/lxde-autostart.file';
 import { RcLocalFile } from './files/rc-local.file';
 import { LightdmFile } from './files/lightdm.file';
+var CronJob = require('cron').CronJob;
 
 class RaspberryPiService {
   instance: any = null;
@@ -29,10 +30,29 @@ class RaspberryPiService {
     }
   }
 
+  startCronJobs() {
+
+    // Reconnect to wifi
+    new CronJob('*/10 * * * * *', () => {
+      console.log('You will see this message 10 second');
+      // weard bug in firmware: https://raspberrypi.stackexchange.com/questions/43720/disable-wifi-wlan0-on-pi-3
+      const command = `sudo iwgetid`;
+      exec(command, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error: ${error}`);
+          return;
+        }
+        console.log(stdout)
+      });
+    }, null, true, 'Europe/Berlin');
+
+  }
+
   enableWifi() {
     console.log('Controller: enableWifi');
     return new Promise(resolved => {
-      const command = `sudo iwconfig wlan0 txpower on`;
+      // weard bug in firmware: https://raspberrypi.stackexchange.com/questions/43720/disable-wifi-wlan0-on-pi-3
+      const command = `sudo iwconfig wlan0 txpower auto && sudo iwconfig wlan0 txpower auto && sudo iwconfig wlan0 txpower on && sudo iw wlan0 set power_save off`;
       exec(command, (error, stdout, stderr) => {
         if (error) {
           console.error(`exec error: ${error}`);
@@ -41,10 +61,6 @@ class RaspberryPiService {
         resolved();
       });
     });
-  }
-
-  getSsid() {
-
   }
 
   updateVersion() {
