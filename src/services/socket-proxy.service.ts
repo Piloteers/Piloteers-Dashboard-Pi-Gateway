@@ -4,6 +4,7 @@ import * as wildcard from 'socketio-wildcard';
 import { CommandSocket } from '../sockets/command.socket';
 import { RoutesEnum } from '@piloteers/dashboard-model';
 import { gatewayCommandsService } from './gateway-commands.service';
+import { DeviceSocket } from '../sockets/device.socket';
 let patch = wildcard(io.Manager);
 
 export class SocketProxyService {
@@ -19,6 +20,7 @@ export class SocketProxyService {
       });
 
       new CommandSocket(this.socket, this.proxyClient);
+      new DeviceSocket(this.socket, this.proxyClient);
 
       this.proxyClient.on('connect', () => {
         console.log('Gateway connected to server')
