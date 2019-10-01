@@ -15,6 +15,10 @@ class MicroControllerService {
       await raspberryPiService.updateVersion();
     }
   }
+
+  checkMonitorStatus() {
+    raspberryPiService.checkMonitorStatus();
+  }
 }
 
 export const microControllerService = Object.freeze(new MicroControllerService());

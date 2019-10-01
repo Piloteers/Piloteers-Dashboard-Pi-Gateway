@@ -53,60 +53,39 @@ class RaspberryPiService {
                     return;
                 }
                 const ssid = helpers_1.extractFirstQuotedText(stdout);
-                if (ssid != 'Piloteers') {
-                    console.log(ssid);
-                }
                 if (!ssid) {
                     console.log('Wifi disconnected', new Date());
+                    console.log(ssid, stdout);
                     this.reconnectWifi();
                 }
             });
         }, null, true, 'Europe/Berlin');
         // Check active screen time  
-        new CronJob('*/10 * * * * *', () => {
-            console.log('Monitor check', new Date('2019-09-30T17:19:54.003Z'));
-            const date = new Date();
-            if (device_service_1.deviceService.data.device.isConnected) {
-                const activeScreenTime = device_service_1.deviceService.data.device.deviceSettings.activeScreenTime;
-                const quarter = Math.floor(parseInt(date_fns_1.format(date, 'mm')) / 15);
-                const time = date_fns_1.format(date.setMinutes(quarter * 15), 'HH:mm');
-                const day = moment().format('ddd').toUpperCase();
-                const schedule = activeScreenTime.find((s) => s.day == day);
-                if (schedule) {
-                    if (schedule.times.includes(time)) {
-                        this.turnMonitorOn();
-                    }
-                    else {
-                        this.turnMonitorOff();
-                    }
-                }
-                else {
+        new CronJob('0 */1 * * * *', () => {
+            this.checkMonitorStatus();
+        }, null, true, 'Europe/Berlin');
+    }
+    checkMonitorStatus() {
+        console.log('Monitor check', new Date());
+        const date = new Date();
+        if (device_service_1.deviceService.data.device.isConnected) {
+            const activeScreenTime = device_service_1.deviceService.data.device.deviceSettings.activeScreenTime;
+            const quarter = Math.floor(parseInt(date_fns_1.format(date, 'mm')) / 15);
+            const time = date_fns_1.format(date.setMinutes(quarter * 15), 'HH:mm');
+            const day = moment().format('ddd').toUpperCase();
+            const schedule = activeScreenTime.find((s) => s.day == day);
+            if (schedule) {
+                if (schedule.times.includes(time)) {
                     this.turnMonitorOn();
                 }
+                else {
+                    this.turnMonitorOff();
+                }
             }
-        }, null, true, 'Europe/Berlin');
-        // // Turn Monitor on 
-        // new CronJob('0 9  * * 1-5', () => {
-        //   console.log('Turn Monitor On', new Date());
-        //   const command = `sudo vcgencmd display_power 1`;
-        //   exec(command, (error, stdout, stderr) => {
-        //     if (error) {
-        //       console.error(`exec error: ${error}`);
-        //       return;
-        //     }
-        //   });
-        // }, null, true, 'Europe/Berlin');
-        // // Turn Monitor on 
-        // new CronJob('0 19  * * 1-5', () => {
-        //   console.log('Turn Monitor Off', new Date());
-        //   const command = `sudo vcgencmd display_power 0`;
-        //   exec(command, (error, stdout, stderr) => {
-        //     if (error) {
-        //       console.error(`exec error: ${error}`);
-        //       return;
-        //     }
-        //   });
-        // }, null, true, 'Europe/Berlin');
+            else {
+                this.turnMonitorOn();
+            }
+        }
     }
     turnMonitorOn() {
         console.log('Turn Monitor On', new Date());

@@ -24,6 +24,9 @@ class MicroControllerService {
             }
         });
     }
+    checkMonitorStatus() {
+        raspberry_pi_service_1.raspberryPiService.checkMonitorStatus();
+    }
 }
 exports.microControllerService = Object.freeze(new MicroControllerService());
 //# sourceMappingURL=micro-controller.service.js.map
