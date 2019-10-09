@@ -43,14 +43,15 @@ class RaspberryPiService {
       exec(command, (error, stdout, stderr) => {
         if (error) {
           console.error(`exec error: ${error}`);
+          this.reconnectWifi();
           return;
         }
-        const ssid = extractFirstQuotedText(stdout)
-        if (!ssid) {
-          console.log('Wifi disconnected', new Date());
-          console.log(ssid, stdout)
-          this.reconnectWifi();
-        }
+        // const ssid = extractFirstQuotedText(stdout)
+        // if (!ssid) {
+        //   console.log('Wifi disconnected', new Date());
+        //   console.log(ssid, stdout)
+        //   this.reconnectWifi();
+        // }
       });
     }, null, true, 'Europe/Berlin');
 

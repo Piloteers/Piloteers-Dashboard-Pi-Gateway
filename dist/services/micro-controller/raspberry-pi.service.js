@@ -14,7 +14,6 @@ const { version } = require('../../../package.json');
 const lxde_autostart_file_1 = require("./files/lxde-autostart.file");
 const rc_local_file_1 = require("./files/rc-local.file");
 const lightdm_file_1 = require("./files/lightdm.file");
-const helpers_1 = require("../../helpers");
 const date_fns_1 = require("date-fns");
 const moment = require("moment");
 const device_service_1 = require("../device.service");
@@ -50,14 +49,15 @@ class RaspberryPiService {
             child_process_1.exec(command, (error, stdout, stderr) => {
                 if (error) {
                     console.error(`exec error: ${error}`);
+                    this.reconnectWifi();
                     return;
                 }
-                const ssid = helpers_1.extractFirstQuotedText(stdout);
-                if (!ssid) {
-                    console.log('Wifi disconnected', new Date());
-                    console.log(ssid, stdout);
-                    this.reconnectWifi();
-                }
+                // const ssid = extractFirstQuotedText(stdout)
+                // if (!ssid) {
+                //   console.log('Wifi disconnected', new Date());
+                //   console.log(ssid, stdout)
+                //   this.reconnectWifi();
+                // }
             });
         }, null, true, 'Europe/Berlin');
         // Check active screen time  
